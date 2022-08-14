@@ -17,6 +17,14 @@ module.exports = (app) => {
 		)
 		res.send(model)
 	})
+	// 删除分类的接口
+	router.delete("/categories/:editId", async (req, res) => {
+		// 通过editId去查找，找到后再删除
+		await Category.findByIdAndDelete(req.params.editId, req.body)
+		res.send({
+			success: true,
+		})
+	})
 	// 分类列表的接口
 	router.get("/categories", async (req, res) => {
 		const items = await Category.find().limit(10)

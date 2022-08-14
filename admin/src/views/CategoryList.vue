@@ -12,6 +12,12 @@
 						@click="$router.push(`/categories/edit/${row._id}`)"
 						>编辑</el-button
 					>
+					<el-button
+						type="text"
+						size="small"
+						@click="removeCategory(row)"
+						>删除</el-button
+					>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -34,6 +40,27 @@ export default {
 			// 返回promise，把异步的回调函数的写法换成类似同步的写法
 			const res = await this.$http.get("categories")
 			this.items = res.data
+		},
+		removeCategory(row) {
+			this.$confirm(`是否确定要删除分类 "${row.name}"`, "提示", {
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type: "warning",
+			})
+				.then(async () => {
+					await this.$http.delete(`categories/${row._id}`)
+					this.$message({
+						type: "success",
+						message: "删除成功!",
+					})
+					this.fetch()
+				})
+				.catch(() => {
+					this.$message({
+						type: "info",
+						message: "已取消删除",
+					})
+				})
 		},
 	},
 }

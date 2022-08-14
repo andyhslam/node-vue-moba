@@ -3,7 +3,7 @@
 		<h1>{{ editId ? "编辑" : "新建" }}分类</h1>
 		<el-form label-width="120px" @submit.native.prevent="save">
 			<el-form-item label="名称">
-				<el-input v-model="model.name"></el-input>
+				<el-input v-model="categoryModel.name"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" native-type="submit">保存</el-button>
@@ -27,8 +27,15 @@ export default {
 	},
 	data() {
 		return {
-			model: {},
+			categoryModel: {},
 		}
+	},
+	beforeRouteEnter: (to, from, next) => {
+		next((vm) => {
+			if (!from.props) {
+				vm.categoryModel = {}
+			}
+		})
 	},
 	created() {
 		this.editId && this.fetch()
@@ -36,13 +43,16 @@ export default {
 	methods: {
 		async fetch() {
 			const res = await this.$http.get(`categories/${this.editId}`)
-			this.model = res.data
+			this.categoryModel = res.data
 		},
 		async save() {
 			if (this.editId) {
-				await this.$http.put(`categories/${this.editId}`, this.model)
+				await this.$http.put(
+					`categories/${this.editId}`,
+					this.categoryModel
+				)
 			} else {
-				await this.$http.post("categories", this.model)
+				await this.$http.post("categories", this.categoryModel)
 			}
 			this.$router.push("/categories/list")
 			this.$message({
