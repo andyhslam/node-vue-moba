@@ -21,8 +21,14 @@ export default {
 		}
 	},
 	methods: {
-		save() {
-			// this.$http.post()
+		async save() {
+			// 返回promise，把异步的回调函数的写法换成类似同步的写法
+			await this.$http.post("categories", this.model)
+			this.$router.push("/categories/list")
+			this.$message({
+				type: "success",
+				message: "保存成功",
+			})
 		},
 	},
 }
