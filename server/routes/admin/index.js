@@ -27,7 +27,8 @@ module.exports = (app) => {
 	})
 	// 分类列表的接口
 	router.get("/categories", async (req, res) => {
-		const items = await Category.find().limit(10)
+		// populate表示关联取出parent字段指向的完整信息(对象)
+		const items = await Category.find().populate("parent").limit(10)
 		res.send(items) // 返回给客户端
 	})
 	// 获取编辑分类的接口
