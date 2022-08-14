@@ -17,6 +17,11 @@ const routes = [
 				component: CategoryEdit,
 			},
 			{
+				path: "/categories/edit/:editId",
+				component: CategoryEdit,
+				props: true, // 表示把url参数editId注入到CategoryEdit页面
+			},
+			{
 				path: "/categories/list",
 				component: CategoryList,
 			},

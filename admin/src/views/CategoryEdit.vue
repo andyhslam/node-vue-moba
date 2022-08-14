@@ -1,6 +1,6 @@
 <template>
 	<div class="category-edit">
-		<h1>新建分类</h1>
+		<h1>{{ editId ? "编辑" : "新建" }}分类</h1>
 		<el-form label-width="120px" @submit.native.prevent="save">
 			<el-form-item label="名称">
 				<el-input v-model="model.name"></el-input>
@@ -15,15 +15,35 @@
 <script>
 export default {
 	name: "CategoryEdit",
+	props: {
+		/**
+		 * 和使用this.$route.params.editId效果一样
+		 * 这样写的好处：让页面和路由尽可能地解耦
+		 */
+		editId: {
+			type: String,
+			default: "",
+		},
+	},
 	data() {
 		return {
 			model: {},
 		}
 	},
+	created() {
+		this.editId && this.fetch()
+	},
 	methods: {
+		async fetch() {
+			const res = await this.$http.get(`categories/${this.editId}`)
+			this.model = res.data
+		},
 		async save() {
-			// 返回promise，把异步的回调函数的写法换成类似同步的写法
-			await this.$http.post("categories", this.model)
+			if (this.editId) {
+				await this.$http.put(`categories/${this.editId}`, this.model)
+			} else {
+				await this.$http.post("categories", this.model)
+			}
 			this.$router.push("/categories/list")
 			this.$message({
 				type: "success",
