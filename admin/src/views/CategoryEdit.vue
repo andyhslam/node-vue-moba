@@ -1,5 +1,5 @@
 <template>
-	<div class="category">
+	<div class="category-edit">
 		<h1>新建分类</h1>
 		<el-form label-width="120px" @submit.native.prevent="save">
 			<el-form-item label="名称">
