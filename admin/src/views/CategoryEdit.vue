@@ -55,21 +55,21 @@ export default {
 	},
 	methods: {
 		async fetchParents() {
-			const res = await this.$http.get(`categories`)
+			const res = await this.$http.get(`rest/categories`)
 			this.parents = res.data
 		},
 		async fetch() {
-			const res = await this.$http.get(`categories/${this.editId}`)
+			const res = await this.$http.get(`rest/categories/${this.editId}`)
 			this.categoryModel = res.data
 		},
 		async save() {
 			if (this.editId) {
 				await this.$http.put(
-					`categories/${this.editId}`,
+					`rest/categories/${this.editId}`,
 					this.categoryModel
 				)
 			} else {
-				await this.$http.post("categories", this.categoryModel)
+				await this.$http.post("rest/categories", this.categoryModel)
 			}
 			this.$router.push("/categories/list")
 			this.$message({
