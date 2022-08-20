@@ -1,0 +1,112 @@
+<template>
+	<div class="item-edit">
+		<h1>{{ editId ? "编辑" : "新建" }}英雄</h1>
+		<el-form label-width="120px" @submit.native.prevent="save">
+			<el-form-item label="名称">
+				<el-input v-model="heroModel.name"></el-input>
+			</el-form-item>
+			<el-form-item label="头像">
+				<el-upload
+					class="avatar-uploader"
+					:action="$http.defaults.baseURL + '/upload'"
+					:show-file-list="false"
+					:on-success="afterUpload"
+				>
+					<img
+						v-if="heroModel.avatar"
+						:src="heroModel.avatar"
+						class="avatar"
+					/>
+					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
+			</el-form-item>
+			<el-form-item>
+				<el-button type="primary" native-type="submit">保存</el-button>
+			</el-form-item>
+		</el-form>
+	</div>
+</template>
+
+<script>
+export default {
+	name: "HeroEdit",
+	props: {
+		/**
+		 * 和使用this.$route.params.editId效果一样
+		 * 这样写的好处：让页面和路由尽可能地解耦
+		 */
+		editId: {
+			type: String,
+			default: "",
+		},
+	},
+	data() {
+		return {
+			heroModel: {
+				name: "",
+				avatar: "",
+			},
+		}
+	},
+	beforeRouteEnter: (to, from, next) => {
+		next((vm) => {
+			if (!from.props) {
+				vm.heroModel = {}
+			}
+		})
+	},
+	created() {
+		this.editId && this.fetch()
+	},
+	methods: {
+		afterUpload(res) {
+			this.heroModel.avatar = res.url
+		},
+		async fetch() {
+			const res = await this.$http.get(`rest/heroes/${this.editId}`)
+			this.heroModel = res.data
+		},
+		async save() {
+			if (this.editId) {
+				await this.$http.put(
+					`rest/heroes/${this.editId}`,
+					this.heroModel
+				)
+			} else {
+				await this.$http.post("rest/heroes", this.heroModel)
+			}
+			this.$router.push("/heroes/list")
+			this.$message({
+				type: "success",
+				message: "保存成功",
+			})
+		},
+	},
+}
+</script>
+
+<style>
+.avatar-uploader .el-upload {
+	border: 1px dashed #d9d9d9;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+	border-color: #409eff;
+}
+.avatar-uploader-icon {
+	font-size: 28px;
+	color: #8c939d;
+	width: 178px;
+	height: 178px;
+	line-height: 178px;
+	text-align: center;
+}
+.avatar {
+	width: 178px;
+	height: 178px;
+	display: block;
+}
+</style>

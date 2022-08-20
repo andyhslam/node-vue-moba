@@ -5,6 +5,8 @@ import CategoryEdit from "../views/CategoryEdit.vue"
 import CategoryList from "../views/CategoryList.vue"
 import ItemEdit from "../views/ItemEdit.vue"
 import ItemList from "../views/ItemList.vue"
+import HeroEdit from "../views/HeroEdit.vue"
+import HeroList from "../views/HeroList.vue"
 
 Vue.use(VueRouter)
 
@@ -39,6 +41,19 @@ const routes = [
 			{
 				path: "/items/list",
 				component: ItemList,
+			},
+			{
+				path: "/heroes/create",
+				component: HeroEdit,
+			},
+			{
+				path: "/heroes/edit/:editId",
+				component: HeroEdit,
+				props: true, // 表示把url参数editId注入到HeroEdit页面
+			},
+			{
+				path: "/heroes/list",
+				component: HeroList,
 			},
 		],
 	},
