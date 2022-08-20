@@ -4,6 +4,11 @@
 		<el-table :data="items">
 			<el-table-column prop="_id" label="ID"></el-table-column>
 			<el-table-column prop="name" label="物品名称" />
+			<el-table-column label="图标">
+				<template v-slot="{ row }">
+					<img :src="row.icon" alt="" style="height: 3rem" />
+				</template>
+			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="180">
 				<template slot-scope="{ row }">
 					<el-button

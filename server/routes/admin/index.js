@@ -69,4 +69,16 @@ module.exports = (app) => {
 		},
 		router
 	)
+
+	const multer = require("multer")
+	const upload = multer({ dest: __dirname + "/../../uploads" }) // 用来处理上传数据的中间件
+	app.post("/admin/api/upload", upload.single("file"), async (req, res) => {
+		/**
+		 * 接口可以接收单个的上传文件(字段名为file)
+		 * express本身没有req.file，是因为用了upload中间件，把上传文件数据挂载到req对象
+		 */
+		const file = req.file
+		file.url = `http://localhost:3000/uploads/${file.filename}`
+		res.send(file)
+	})
 }

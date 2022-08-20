@@ -6,7 +6,19 @@
 				<el-input v-model="itemModel.name"></el-input>
 			</el-form-item>
 			<el-form-item label="图标">
-				<el-input v-model="itemModel.icon"></el-input>
+				<el-upload
+					class="avatar-uploader"
+					:action="$http.defaults.baseURL + '/upload'"
+					:show-file-list="false"
+					:on-success="afterUpload"
+				>
+					<img
+						v-if="itemModel.icon"
+						:src="itemModel.icon"
+						class="avatar"
+					/>
+					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" native-type="submit">保存</el-button>
@@ -44,6 +56,10 @@ export default {
 		this.editId && this.fetch()
 	},
 	methods: {
+		afterUpload(res) {
+			this.$set(this.itemModel, "icon", res.url)
+			// this.itemModel.icon = res.url
+		},
 		async fetch() {
 			const res = await this.$http.get(`rest/items/${this.editId}`)
 			this.itemModel = res.data
@@ -66,3 +82,29 @@ export default {
 	},
 }
 </script>
+
+<style>
+.avatar-uploader .el-upload {
+	border: 1px dashed #d9d9d9;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+	border-color: #409eff;
+}
+.avatar-uploader-icon {
+	font-size: 28px;
+	color: #8c939d;
+	width: 178px;
+	height: 178px;
+	line-height: 178px;
+	text-align: center;
+}
+.avatar {
+	width: 178px;
+	height: 178px;
+	display: block;
+}
+</style>
