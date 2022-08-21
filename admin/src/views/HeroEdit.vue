@@ -1,5 +1,5 @@
 <template>
-	<div class="item-edit">
+	<div class="hero-edit">
 		<h1>{{ editId ? "编辑" : "新建" }}英雄</h1>
 		<el-form label-width="120px" @submit.native.prevent="save">
 			<el-tabs type="border-card" value="skills">
