@@ -57,8 +57,8 @@ export default {
 	},
 	methods: {
 		afterUpload(res) {
+			// 在vue里面，因为itemModel原本没有icon属性，如果要新加属性，就要使用$set方法
 			this.$set(this.itemModel, "icon", res.url)
-			// this.itemModel.icon = res.url
 		},
 		async fetch() {
 			const res = await this.$http.get(`rest/items/${this.editId}`)
