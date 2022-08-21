@@ -17,7 +17,7 @@
 				<el-input v-model="articleModel.title"></el-input>
 			</el-form-item>
 			<el-form-item label="详情">
-				<el-input v-model="articleModel.body"></el-input>
+				<vue-editor v-model="articleModel.body"></vue-editor>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" native-type="submit">保存</el-button>
@@ -27,8 +27,13 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor"
+
 export default {
 	name: "ArticleEdit",
+	components: {
+		VueEditor,
+	},
 	props: {
 		/**
 		 * 和使用this.$route.params.editId效果一样
