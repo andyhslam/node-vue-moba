@@ -2,109 +2,163 @@
 	<div class="item-edit">
 		<h1>{{ editId ? "编辑" : "新建" }}英雄</h1>
 		<el-form label-width="120px" @submit.native.prevent="save">
-			<el-form-item label="名称">
-				<el-input v-model="heroModel.name"></el-input>
-			</el-form-item>
-			<el-form-item label="称号">
-				<el-input v-model="heroModel.title"></el-input>
-			</el-form-item>
-			<el-form-item label="头像">
-				<el-upload
-					class="avatar-uploader"
-					:action="$http.defaults.baseURL + '/upload'"
-					:show-file-list="false"
-					:on-success="afterUpload"
-				>
-					<img
-						v-if="heroModel.avatar"
-						:src="heroModel.avatar"
-						class="avatar"
-					/>
-					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
-				</el-upload>
-			</el-form-item>
-			<el-form-item label="类型">
-				<el-select v-model="heroModel.categories" multiple>
-					<el-option
-						v-for="item of categories"
-						:key="item._id"
-						:label="item.name"
-						:value="item._id"
-					></el-option>
-				</el-select>
-			</el-form-item>
-			<el-form-item label="难度">
-				<el-rate
-					:max="9"
-					show-score
-					v-model="heroModel.scores.difficult"
-					style="margin-top: 0.6rem"
-				></el-rate>
-			</el-form-item>
-			<el-form-item label="技能">
-				<el-rate
-					:max="9"
-					show-score
-					v-model="heroModel.scores.skills"
-					style="margin-top: 0.6rem"
-				></el-rate>
-			</el-form-item>
-			<el-form-item label="攻击">
-				<el-rate
-					:max="9"
-					show-score
-					v-model="heroModel.scores.attack"
-					style="margin-top: 0.6rem"
-				></el-rate>
-			</el-form-item>
-			<el-form-item label="生存">
-				<el-rate
-					:max="9"
-					show-score
-					v-model="heroModel.scores.survive"
-					style="margin-top: 0.6rem"
-				></el-rate>
-			</el-form-item>
-			<el-form-item label="顺风出装">
-				<el-select v-model="heroModel.items1" multiple>
-					<el-option
-						v-for="item of items"
-						:key="item._id"
-						:label="item.name"
-						:value="item._id"
-					></el-option>
-				</el-select>
-			</el-form-item>
-			<el-form-item label="逆风出装">
-				<el-select v-model="heroModel.items2" multiple>
-					<el-option
-						v-for="item of items"
-						:key="item._id"
-						:label="item.name"
-						:value="item._id"
-					></el-option>
-				</el-select>
-			</el-form-item>
-			<!-- 管理后台的每个编辑字段都是一个el-form-item -->
-			<el-form-item label="使用技巧">
-				<el-input
-					v-model="heroModel.usageTips"
-					type="textarea"
-				></el-input>
-			</el-form-item>
-			<el-form-item label="对抗技巧">
-				<el-input
-					v-model="heroModel.battleTips"
-					type="textarea"
-				></el-input>
-			</el-form-item>
-			<el-form-item label="团战思路">
-				<el-input
-					v-model="heroModel.teamTips"
-					type="textarea"
-				></el-input>
-			</el-form-item>
-			<el-form-item>
+			<el-tabs type="border-card" value="skills">
+				<el-tab-pane label="基础信息" name="basic">
+					<el-form-item label="名称">
+						<el-input v-model="heroModel.name"></el-input>
+					</el-form-item>
+					<el-form-item label="称号">
+						<el-input v-model="heroModel.title"></el-input>
+					</el-form-item>
+					<el-form-item label="头像">
+						<el-upload
+							class="avatar-uploader"
+							:action="$http.defaults.baseURL + '/upload'"
+							:show-file-list="false"
+							:on-success="afterUpload"
+						>
+							<img
+								v-if="heroModel.avatar"
+								:src="heroModel.avatar"
+								class="avatar"
+							/>
+							<i
+								v-else
+								class="el-icon-plus avatar-uploader-icon"
+							></i>
+						</el-upload>
+					</el-form-item>
+					<el-form-item label="类型">
+						<el-select v-model="heroModel.categories" multiple>
+							<el-option
+								v-for="item of categories"
+								:key="item._id"
+								:label="item.name"
+								:value="item._id"
+							></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="难度">
+						<el-rate
+							:max="9"
+							show-score
+							v-model="heroModel.scores.difficult"
+							style="margin-top: 0.6rem"
+						></el-rate>
+					</el-form-item>
+					<el-form-item label="技能">
+						<el-rate
+							:max="9"
+							show-score
+							v-model="heroModel.scores.skills"
+							style="margin-top: 0.6rem"
+						></el-rate>
+					</el-form-item>
+					<el-form-item label="攻击">
+						<el-rate
+							:max="9"
+							show-score
+							v-model="heroModel.scores.attack"
+							style="margin-top: 0.6rem"
+						></el-rate>
+					</el-form-item>
+					<el-form-item label="生存">
+						<el-rate
+							:max="9"
+							show-score
+							v-model="heroModel.scores.survive"
+							style="margin-top: 0.6rem"
+						></el-rate>
+					</el-form-item>
+					<el-form-item label="顺风出装">
+						<el-select v-model="heroModel.items1" multiple>
+							<el-option
+								v-for="item of items"
+								:key="item._id"
+								:label="item.name"
+								:value="item._id"
+							></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="逆风出装">
+						<el-select v-model="heroModel.items2" multiple>
+							<el-option
+								v-for="item of items"
+								:key="item._id"
+								:label="item.name"
+								:value="item._id"
+							></el-option>
+						</el-select>
+					</el-form-item>
+					<!-- 管理后台的每个编辑字段都是一个el-form-item -->
+					<el-form-item label="使用技巧">
+						<el-input
+							v-model="heroModel.usageTips"
+							type="textarea"
+						></el-input>
+					</el-form-item>
+					<el-form-item label="对抗技巧">
+						<el-input
+							v-model="heroModel.battleTips"
+							type="textarea"
+						></el-input>
+					</el-form-item>
+					<el-form-item label="团战思路">
+						<el-input
+							v-model="heroModel.teamTips"
+							type="textarea"
+						></el-input>
+					</el-form-item>
+				</el-tab-pane>
+				<el-tab-pane label="技能" name="skills">
+					<el-button size="small" @click="heroModel.skills.push({})">
+						<i class="el-icon-plus"></i> 添加技能
+					</el-button>
+					<el-row type="flex" style="flex-wrap: wrap">
+						<!-- 在中等屏幕md，宽度设置为12，即一行展示两个框 -->
+						<el-col
+							:md="12"
+							v-for="(item, index) in heroModel.skills"
+							:key="index"
+						>
+							<el-form-item label="名称">
+								<el-input v-model="item.name"></el-input>
+							</el-form-item>
+							<el-form-item label="图标">
+								<el-upload
+									class="avatar-uploader"
+									:action="$http.defaults.baseURL + '/upload'"
+									:show-file-list="false"
+									:on-success="afterUpload"
+								>
+									<img
+										v-if="item.icon"
+										:src="item.icon"
+										class="avatar"
+									/>
+									<i
+										v-else
+										class="el-icon-plus avatar-uploader-icon"
+									></i>
+								</el-upload>
+							</el-form-item>
+							<el-form-item label="描述">
+								<el-input
+									type="textarea"
+									v-model="item.description"
+								></el-input>
+							</el-form-item>
+							<el-form-item label="小提示">
+								<el-input
+									type="textarea"
+									v-model="item.tips"
+								></el-input>
+							</el-form-item>
+						</el-col>
+					</el-row>
+				</el-tab-pane>
+			</el-tabs>
+			<el-form-item style="margin-top: 1rem">
 				<el-button type="primary" native-type="submit">保存</el-button>
 			</el-form-item>
 		</el-form>
@@ -129,9 +183,7 @@ export default {
 			heroModel: {
 				name: "",
 				avatar: "",
-				scores: {
-					difficult: 0,
-				},
+				scores: {},
 			},
 			categories: [],
 			items: [],
@@ -143,9 +195,7 @@ export default {
 				vm.heroModel = {
 					name: "",
 					avatar: "",
-					scores: {
-						difficult: 0,
-					},
+					scores: {},
 				}
 			}
 		})
