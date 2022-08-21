@@ -129,7 +129,9 @@
 									class="avatar-uploader"
 									:action="$http.defaults.baseURL + '/upload'"
 									:show-file-list="false"
-									:on-success="afterUpload"
+									:on-success="
+										(res) => $set(item, 'icon', res.url)
+									"
 								>
 									<img
 										v-if="item.icon"
@@ -153,6 +155,14 @@
 									type="textarea"
 									v-model="item.tips"
 								></el-input>
+							</el-form-item>
+							<el-form-item>
+								<el-button
+									size="small"
+									type="danger"
+									@click="heroModel.skills.splice(index, 1)"
+									>删除</el-button
+								>
 							</el-form-item>
 						</el-col>
 					</el-row>
@@ -254,14 +264,14 @@ export default {
 .avatar-uploader-icon {
 	font-size: 28px;
 	color: #8c939d;
-	width: 178px;
-	height: 178px;
-	line-height: 178px;
+	width: 5rem;
+	height: 5rem;
+	line-height: 5rem;
 	text-align: center;
 }
 .avatar {
-	width: 178px;
-	height: 178px;
+	width: 5rem;
+	height: 5rem;
 	display: block;
 }
 </style>
