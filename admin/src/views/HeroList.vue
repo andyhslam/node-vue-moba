@@ -4,6 +4,7 @@
 		<el-table :data="items">
 			<el-table-column prop="_id" label="ID"></el-table-column>
 			<el-table-column prop="name" label="英雄名称" />
+			<el-table-column prop="title" label="称号" />
 			<el-table-column label="头像">
 				<template v-slot="{ row }">
 					<img :src="row.avatar" alt="" style="height: 3rem" />

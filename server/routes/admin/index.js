@@ -16,7 +16,7 @@ module.exports = (app) => {
 	})
 	// 提交编辑分类的接口
 	router.put("/:editId", async (req, res) => {
-		// 通过editId去查找，找到后再更新
+		// 通过动态参数editId去查找，找到后再更新
 		const model = await req.Model.findByIdAndUpdate(
 			req.params.editId,
 			req.body
@@ -25,13 +25,13 @@ module.exports = (app) => {
 	})
 	// 删除分类的接口
 	router.delete("/:editId", async (req, res) => {
-		// 通过editId去查找，找到后再删除
+		// 通过动态参数editId去查找，找到后再删除
 		await req.Model.findByIdAndDelete(req.params.editId, req.body)
 		res.send({
 			success: true,
 		})
 	})
-	// 分类列表的接口
+	// 获取分类列表的接口
 	router.get("/", async (req, res) => {
 		/**
 		 * populate("parent")表示关联取出parent字段指向的完整信息(对象)
@@ -52,14 +52,15 @@ module.exports = (app) => {
 	})
 
 	/**
-	 * 把父级的url参数合并到router路由里面，让子级都能访问，即可以让子路由继承父路由的参数。
-	 * 先用该中间件处理，然后请求地址，再调用next方法去处理下一个。
 	 * 中间件：拦截路由，类似于拦截器
+	 * 先用该中间件处理，然后请求地址，再调用next方法去处理下一个。
+	 * mergeParams字段的含义：
+	 * 把父级的url参数合并到router路由里面，让子级都能访问，即可以让子路由继承父路由的参数。
 	 */
 	app.use(
 		"/admin/api/rest/:resource",
 		async (req, res, next) => {
-			// 获取模型名称：url动态参数是resource，classify转换类名(例如把categories转换成req.Model)
+			// 获取模型名称：url动态参数是resource，classify转换类名(例如把categories转换成Category)
 			const modelName = require("inflection").classify(
 				req.params.resource
 			)
