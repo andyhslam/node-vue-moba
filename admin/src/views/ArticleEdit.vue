@@ -17,7 +17,11 @@
 				<el-input v-model="articleModel.title"></el-input>
 			</el-form-item>
 			<el-form-item label="详情">
-				<vue-editor v-model="articleModel.body"></vue-editor>
+				<vue-editor
+					useCustomImageHandler
+					@image-added="handleImageAdded"
+					v-model="articleModel.body"
+				></vue-editor>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" native-type="submit">保存</el-button>
@@ -84,6 +88,17 @@ export default {
 				type: "success",
 				message: "保存成功",
 			})
+		},
+		async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+			/**
+			 * 两种方式：1.提交表单数据(上传文件)；2.提交json数据
+			 * 在这里由于要上传文件，所以必须得提交表单数据
+			 */
+			const formData = new FormData()
+			formData.append("file", file)
+			const res = await this.$http.post("upload", formData)
+			Editor.insertEmbed(cursorLocation, "image", res.data.url)
+			resetUploader()
 		},
 	},
 }
