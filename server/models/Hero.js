@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
 	 */
 	categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
 	/**
-	 * 定义数据模型：
+	 * 后端建立数据模型，只需要一个集合；对应到关系型数据库，只需要一张表：
 	 * 定义一个复合类型的字段，在传统的关系型数据库(比如mysql)没办法这样子直接定义
 	 * 在mongodb数据库，可以定义字符串、数组、对象，甚至定义json数据类型更方便
 	 */

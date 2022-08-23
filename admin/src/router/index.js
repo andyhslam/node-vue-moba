@@ -9,6 +9,8 @@ import HeroEdit from "../views/HeroEdit.vue"
 import HeroList from "../views/HeroList.vue"
 import ArticleEdit from "../views/ArticleEdit.vue"
 import ArticleList from "../views/ArticleList.vue"
+import AdvertEdit from "../views/AdvertEdit.vue"
+import AdvertList from "../views/AdvertList.vue"
 
 Vue.use(VueRouter)
 
@@ -69,6 +71,19 @@ const routes = [
 			{
 				path: "/articles/list",
 				component: ArticleList,
+			},
+			{
+				path: "/adverts/create",
+				component: AdvertEdit,
+			},
+			{
+				path: "/adverts/edit/:editId",
+				component: AdvertEdit,
+				props: true, // 表示把url参数editId注入到AdvertEdit页面
+			},
+			{
+				path: "/adverts/list",
+				component: AdvertList,
 			},
 		],
 	},
