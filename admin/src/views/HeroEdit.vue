@@ -13,6 +13,7 @@
 					<el-form-item label="头像">
 						<el-upload
 							class="avatar-uploader"
+							:headers="uploadOption"
 							:action="$http.defaults.baseURL + '/upload'"
 							:show-file-list="false"
 							:on-success="afterUpload"
@@ -127,6 +128,7 @@
 							<el-form-item label="图标">
 								<el-upload
 									class="avatar-uploader"
+									:headers="uploadOption"
 									:action="$http.defaults.baseURL + '/upload'"
 									:show-file-list="false"
 									:on-success="
@@ -176,6 +178,8 @@
 </template>
 
 <script>
+import { uploadOption } from "@/utils/constant.js"
+
 export default {
 	name: "HeroEdit",
 	props: {
@@ -196,6 +200,7 @@ export default {
 				scores: {},
 				skills: [],
 			},
+			uploadOption,
 			categories: [],
 			items: [],
 		}
