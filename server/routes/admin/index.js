@@ -1,5 +1,7 @@
 module.exports = (app) => {
 	const express = require("express")
+	const jwt = require("jsonwebtoken")
+	const AdminUser = require("../../models/AdminUser")
 	const router = express.Router({
 		mergeParams: true, // 表示合并url参数，要不然require时获取不到url参数
 	})
@@ -8,13 +10,13 @@ module.exports = (app) => {
 	 * 通用CRUD接口：增加(Create)、检索(Retrieve)、更新(Update)和删除(Delete)
 	 * 在每个路由里面，查找对应的模型，对应关系是从url去找
 	 */
-	// 新建分类的接口
+	// 创建资源的接口
 	router.post("/", async (req, res) => {
 		// 创建数据：数据来源是客户端提交过来的数据
 		const model = await req.Model.create(req.body)
 		res.send(model) // 发送给客户端
 	})
-	// 提交编辑分类的接口
+	// 更新资源的接口
 	router.put("/:editId", async (req, res) => {
 		// 通过动态参数editId去查找，找到后再更新
 		const model = await req.Model.findByIdAndUpdate(
@@ -23,7 +25,7 @@ module.exports = (app) => {
 		)
 		res.send(model)
 	})
-	// 删除分类的接口
+	// 删除资源的接口
 	router.delete("/:editId", async (req, res) => {
 		// 通过动态参数editId去查找，找到后再删除
 		await req.Model.findByIdAndDelete(req.params.editId, req.body)
@@ -31,21 +33,41 @@ module.exports = (app) => {
 			success: true,
 		})
 	})
-	// 获取分类列表的接口
-	router.get("/", async (req, res) => {
-		/**
-		 * populate("parent")表示关联取出parent字段指向的完整信息(对象)
-		 */
-		const queryOptions = {}
-		// 此处的modelName是获取Category实例上的属性
-		if (req.Model.modelName === "Category") {
-			// 满足通用性和扩展性
-			queryOptions.populate = "parent"
+	// 资源列表的接口
+	router.get(
+		"/",
+		async (req, res, next) => {
+			// 标准请求头(前端用大写，后端用小写)
+			const token = String(req.headers.authorization || "")
+				.split(" ")
+				.pop()
+			/**
+			 * 解密验证：
+			 * 通过用户ID生成的token，最终也可以通过这个token解释出来对应的用户ID
+			 * 之前用什么数据加密的，最终解释出来的就是那个数据
+			 */
+			const { id } = jwt.verify(token, app.get("secret"))
+			// req.user表示客户端请求时的用户对象(只包含用户名，不包含密码)
+			req.user = await AdminUser.findById(id)
+			await next()
+		},
+		async (req, res) => {
+			/**
+			 * populate("parent")表示关联取出parent字段指向的完整信息(对象)
+			 */
+			const queryOptions = {}
+			// 此处的modelName是获取Category实例上的属性
+			if (req.Model.modelName === "Category") {
+				// 满足通用性和扩展性
+				queryOptions.populate = "parent"
+			}
+			const items = await req.Model.find()
+				.setOptions(queryOptions)
+				.limit(10)
+			res.send(items) // 返回给客户端
 		}
-		const items = await req.Model.find().setOptions(queryOptions).limit(10)
-		res.send(items) // 返回给客户端
-	})
-	// 获取编辑分类的接口
+	)
+	// 资源详情的接口
 	router.get("/:editId", async (req, res) => {
 		const model = await req.Model.findById(req.params.editId)
 		res.send(model) // 返回给客户端
@@ -87,7 +109,6 @@ module.exports = (app) => {
 		const { username, password } = req.body
 		// 实现用户登录的步骤：
 		// 1.根据用户名去数据库找用户
-		const AdminUser = require("../../models/AdminUser")
 		/**
 		 * 数据库的键名和上面的变量名都是username
 		 * select('+password')表示查询数据库时，取出password字段，因为默认是不取的，用加号表示要取它。
@@ -111,7 +132,6 @@ module.exports = (app) => {
 			})
 		}
 		// 3.返回token
-		const jwt = require("jsonwebtoken")
 		/**
 		 * 客户端可以解开token篡改信息，再生成一样的token给服务端，但是此时密钥会改变，服务端就会检测出来
 		 * 此处的app.get和定义路由的app.get名字冲突，所以通过参数名来确定是定义路由还是获取配置，如果只有一个参数，就表示获取配置。

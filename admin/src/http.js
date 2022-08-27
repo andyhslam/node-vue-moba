@@ -5,6 +5,18 @@ const http = axios.create({
 	baseURL: "http://localhost:3000/admin/api",
 })
 
+// 给http请求加个请求拦截器
+http.interceptors.request.use(
+	(config) => {
+		// 行业规范：加上标准格式，Bearer类型
+		config.headers.Authorization = "Bearer " + localStorage.token
+		return config
+	},
+	(error) => {
+		return Promise.reject(error)
+	}
+)
+
 // 给http请求加个响应拦截器
 http.interceptors.response.use(
 	(res) => {
