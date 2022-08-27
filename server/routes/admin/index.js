@@ -1,6 +1,7 @@
 module.exports = (app) => {
 	const express = require("express")
 	const jwt = require("jsonwebtoken")
+	const assert = require("http-assert")
 	const AdminUser = require("../../models/AdminUser")
 	const router = express.Router({
 		mergeParams: true, // 表示合并url参数，要不然require时获取不到url参数
@@ -41,14 +42,18 @@ module.exports = (app) => {
 			const token = String(req.headers.authorization || "")
 				.split(" ")
 				.pop()
+			assert(token, 401, "提供jwt token，请先登录")
 			/**
 			 * 解密验证：
 			 * 通过用户ID生成的token，最终也可以通过这个token解释出来对应的用户ID
 			 * 之前用什么数据加密的，最终解释出来的就是那个数据
 			 */
 			const { id } = jwt.verify(token, app.get("secret"))
+			assert(id, 401, "无效的jwt token，请先登录")
 			// req.user表示客户端请求时的用户对象(只包含用户名，不包含密码)
 			req.user = await AdminUser.findById(id)
+			// 401状态码表示用户身份有问题，验证不通过
+			assert(req.user, 401, "验证不通过，请先登录")
 			await next()
 		},
 		async (req, res) => {
@@ -114,23 +119,14 @@ module.exports = (app) => {
 		 * select('+password')表示查询数据库时，取出password字段，因为默认是不取的，用加号表示要取它。
 		 */
 		const user = await AdminUser.findOne({ username }).select("+password")
-		if (!user) {
-			/**
-			 * 设置状态码再发送
-			 * 422状态码表示客户端提交的数据有问题，rest风格规范也建议，用此状态码来验证错误。
-			 */
-			return res.status(422).send({
-				message: "用户不存在",
-			})
-		}
+		// 这边简单粗暴的抛出异常，让整个nodejs程序报错，然后在最后面的错误处理函数捕获这个异常，之后再处理
+		assert(user, 422, "用户不存在")
+
 		// 2.校验密码
 		// 比较明文和密文是否匹配，compareSync第一个参数是明文，第二个参数是密文
 		const isValid = require("bcrypt").compareSync(password, user.password)
-		if (!isValid) {
-			return res.status(422).send({
-				message: "密码错误",
-			})
-		}
+		assert(isValid, 422, "密码错误")
+
 		// 3.返回token
 		/**
 		 * 客户端可以解开token篡改信息，再生成一样的token给服务端，但是此时密钥会改变，服务端就会检测出来
@@ -138,5 +134,13 @@ module.exports = (app) => {
 		 */
 		const token = jwt.sign({ id: user._id }, app.get("secret")) // 签名生成一个token
 		res.send({ token })
+	})
+
+	// 错误处理函数：抛出http异常的错误处理程序
+	app.use(async (err, req, res, next) => {
+		// 设置状态码再发送：422状态码表示客户端提交的数据有问题，rest风格规范也建议，用此状态码来验证错误。
+		res.status(err.status || 500).send({
+			message: err.message,
+		})
 	})
 }
