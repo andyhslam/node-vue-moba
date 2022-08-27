@@ -11,6 +11,8 @@ import ArticleEdit from "../views/ArticleEdit.vue"
 import ArticleList from "../views/ArticleList.vue"
 import AdvertEdit from "../views/AdvertEdit.vue"
 import AdvertList from "../views/AdvertList.vue"
+import AdminUserEdit from "../views/AdminUserEdit.vue"
+import AdminUserList from "../views/AdminUserList.vue"
 
 Vue.use(VueRouter)
 
@@ -84,6 +86,19 @@ const routes = [
 			{
 				path: "/adverts/list",
 				component: AdvertList,
+			},
+			{
+				path: "/admin_users/create",
+				component: AdminUserEdit,
+			},
+			{
+				path: "/admin_users/edit/:editId",
+				component: AdminUserEdit,
+				props: true, // 表示把url参数editId注入到AdminUserEdit页面
+			},
+			{
+				path: "/admin_users/list",
+				component: AdminUserList,
 			},
 		],
 	},
