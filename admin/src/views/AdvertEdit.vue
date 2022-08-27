@@ -1,5 +1,5 @@
 <template>
-	<div class="category-edit">
+	<div class="advert-edit">
 		<h1>{{ editId ? "编辑" : "新建" }}广告位</h1>
 		<el-form label-width="70px" @submit.native.prevent="save">
 			<el-form-item label="名称">
@@ -59,7 +59,7 @@
 
 <script>
 export default {
-	name: "CategoryEdit",
+	name: "AdvertEdit",
 	props: {
 		/**
 		 * 和使用this.$route.params.editId效果一样

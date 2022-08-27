@@ -1,5 +1,5 @@
 <template>
-	<div class="category-list">
+	<div class="advert-list">
 		<h1>广告位列表</h1>
 		<el-table :data="items">
 			<el-table-column prop="_id" label="ID"></el-table-column>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-	name: "CategoryList",
+	name: "AdvertList",
 	data() {
 		return {
 			items: [],

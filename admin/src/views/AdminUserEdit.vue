@@ -1,5 +1,5 @@
 <template>
-	<div class="category-edit">
+	<div class="admin-user-edit">
 		<h1>{{ editId ? "编辑" : "新建" }}管理员</h1>
 		<el-form label-width="120px" @submit.native.prevent="save">
 			<el-form-item label="用户名">
@@ -7,7 +7,7 @@
 			</el-form-item>
 			<el-form-item label="密码">
 				<el-input
-					type="text"
+					type="password"
 					v-model="adminUserModel.password"
 				></el-input>
 			</el-form-item>

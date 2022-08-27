@@ -1,5 +1,5 @@
 <template>
-	<div class="category-list">
+	<div class="admin-user-list">
 		<h1>管理员列表</h1>
 		<el-table :data="items">
 			<el-table-column prop="_id" label="ID"></el-table-column>
