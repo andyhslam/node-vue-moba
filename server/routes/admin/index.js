@@ -82,4 +82,22 @@ module.exports = (app) => {
 		file.url = `http://localhost:3000/uploads/${file.filename}`
 		res.send(file)
 	})
+
+	app.post("/admin/api/login", async (req, res) => {
+		const { username, password } = req.body
+		// 实现用户登录的步骤：
+		// 1.根据用户名去数据库找用户
+		const AdminUser = require("../../models/AdminUser")
+		// 数据库的键名和上面的变量名都是username
+		const user = await AdminUser.findOne({ username })
+		if (!user) {
+			// 设置状态码再发送
+			return res.status(422).send({
+				message: "用户不存在",
+			})
+		}
+		// 2.校验密码
+		// 3.返回token
+		res.send("ok")
+	})
 }

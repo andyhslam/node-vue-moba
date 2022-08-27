@@ -30,8 +30,9 @@ export default {
 		}
 	},
 	methods: {
-		login() {
-			console.log(this.loginModel)
+		async login() {
+			const res = await this.$http.post("login", this.loginModel)
+			console.log(res.data)
 		},
 	},
 }
