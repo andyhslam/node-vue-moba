@@ -88,16 +88,35 @@ module.exports = (app) => {
 		// 实现用户登录的步骤：
 		// 1.根据用户名去数据库找用户
 		const AdminUser = require("../../models/AdminUser")
-		// 数据库的键名和上面的变量名都是username
-		const user = await AdminUser.findOne({ username })
+		/**
+		 * 数据库的键名和上面的变量名都是username
+		 * select('+password')表示查询数据库时，取出password字段，因为默认是不取的，用加号表示要取它。
+		 */
+		const user = await AdminUser.findOne({ username }).select("+password")
 		if (!user) {
-			// 设置状态码再发送
+			/**
+			 * 设置状态码再发送
+			 * 422状态码表示客户端提交的数据有问题，rest风格规范也建议，用此状态码来验证错误。
+			 */
 			return res.status(422).send({
 				message: "用户不存在",
 			})
 		}
 		// 2.校验密码
+		// 比较明文和密文是否匹配，compareSync第一个参数是明文，第二个参数是密文
+		const isValid = require("bcrypt").compareSync(password, user.password)
+		if (!isValid) {
+			return res.status(422).send({
+				message: "密码错误",
+			})
+		}
 		// 3.返回token
-		res.send("ok")
+		const jwt = require("jsonwebtoken")
+		/**
+		 * 客户端可以解开token篡改信息，再生成一样的token给服务端，但是此时密钥会改变，服务端就会检测出来
+		 * 此处的app.get和定义路由的app.get名字冲突，所以通过参数名来确定是定义路由还是获取配置，如果只有一个参数，就表示获取配置。
+		 */
+		const token = jwt.sign({ id: user._id }, app.get("secret")) // 签名生成一个token
+		res.send({ token })
 	})
 }

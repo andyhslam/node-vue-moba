@@ -32,7 +32,10 @@ export default {
 	methods: {
 		async login() {
 			const res = await this.$http.post("login", this.loginModel)
-			console.log(res.data)
+			localStorage.token = res.data.token
+			// localStorage.clear() 清空所有storage，包括token
+			this.$router.push("/")
+			this.$message.success("登录成功")
 		},
 	},
 }

@@ -2,6 +2,9 @@ const express = require("express")
 
 const app = express()
 
+// 表示在当前的express实例上设置一个变量
+app.set("secret", "0123456789")
+
 app.use(require("cors")())
 // 为了能够使用客户端的req.body
 app.use(express.json())
