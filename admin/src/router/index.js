@@ -18,7 +18,12 @@ import AdminUserList from "../views/AdminUserList.vue"
 Vue.use(VueRouter)
 
 const routes = [
-	{ path: "/login", name: "login", component: Login },
+	{
+		path: "/login",
+		name: "login",
+		component: Login,
+		meta: { isPublic: true },
+	},
 	{
 		path: "/",
 		name: "main",
@@ -108,6 +113,14 @@ const routes = [
 
 const router = new VueRouter({
 	routes,
+})
+
+// 进入路由之前要做什么
+router.beforeEach((to, from, next) => {
+	if (!to.meta.isPublic && !localStorage.token) {
+		next("/login")
+	}
+	next()
 })
 
 export default router
