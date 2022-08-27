@@ -22,8 +22,8 @@
 						<el-form-item label="图片" style="margin-top: 1rem">
 							<el-upload
 								class="avatar-uploader"
-								:headers="uploadOption"
-								:action="$http.defaults.baseURL + '/upload'"
+								:headers="getAuthHeaders()"
+								:action="uploadUrl"
 								:show-file-list="false"
 								:on-success="
 									(res) => $set(item, 'image', res.url)
@@ -59,8 +59,6 @@
 </template>
 
 <script>
-import { uploadOption } from "@/utils/constant.js"
-
 export default {
 	name: "AdvertEdit",
 	props: {
@@ -79,7 +77,6 @@ export default {
 				name: "",
 				items: [],
 			},
-			uploadOption,
 		}
 	},
 	beforeRouteEnter: (to, from, next) => {

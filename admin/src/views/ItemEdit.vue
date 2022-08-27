@@ -8,8 +8,8 @@
 			<el-form-item label="图标">
 				<el-upload
 					class="avatar-uploader"
-					:headers="uploadOption"
-					:action="$http.defaults.baseURL + '/upload'"
+					:headers="getAuthHeaders()"
+					:action="uploadUrl"
 					:show-file-list="false"
 					:on-success="afterUpload"
 				>
@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import { uploadOption } from "@/utils/constant.js"
-
 export default {
 	name: "ItemEdit",
 	props: {
@@ -46,7 +44,6 @@ export default {
 	data() {
 		return {
 			itemModel: {},
-			uploadOption,
 		}
 	},
 	beforeRouteEnter: (to, from, next) => {

@@ -2,7 +2,7 @@
 	<div class="hero-edit">
 		<h1>{{ editId ? "编辑" : "新建" }}英雄</h1>
 		<el-form label-width="120px" @submit.native.prevent="save">
-			<el-tabs type="border-card" value="skills">
+			<el-tabs type="border-card" value="basic">
 				<el-tab-pane label="基础信息" name="basic">
 					<el-form-item label="名称">
 						<el-input v-model="heroModel.name"></el-input>
@@ -13,8 +13,8 @@
 					<el-form-item label="头像">
 						<el-upload
 							class="avatar-uploader"
-							:headers="uploadOption"
-							:action="$http.defaults.baseURL + '/upload'"
+							:headers="getAuthHeaders()"
+							:action="uploadUrl"
 							:show-file-list="false"
 							:on-success="afterUpload"
 						>
@@ -128,8 +128,8 @@
 							<el-form-item label="图标">
 								<el-upload
 									class="avatar-uploader"
-									:headers="uploadOption"
-									:action="$http.defaults.baseURL + '/upload'"
+									:headers="getAuthHeaders()"
+									:action="uploadUrl"
 									:show-file-list="false"
 									:on-success="
 										(res) => $set(item, 'icon', res.url)
@@ -178,8 +178,6 @@
 </template>
 
 <script>
-import { uploadOption } from "@/utils/constant.js"
-
 export default {
 	name: "HeroEdit",
 	props: {
@@ -200,7 +198,6 @@ export default {
 				scores: {},
 				skills: [],
 			},
-			uploadOption,
 			categories: [],
 			items: [],
 		}
