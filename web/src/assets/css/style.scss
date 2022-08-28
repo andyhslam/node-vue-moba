@@ -1,70 +1,83 @@
 // reset
 * {
-	box-sizing: border-box;
-	outline: none; // 不高亮显示
+  box-sizing: border-box;
+  outline: none; // 不高亮显示
 }
+
 html {
-	font-size: 13px; // 定义网站的基本字体尺寸
+  font-size: 13px; // 定义网站的基本字体尺寸
 }
+
 body {
-	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
-	line-height: 1.2em;
-	background-color: #f1f1f1;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.2em;
+  background-color: #f1f1f1;
+  -webkit-font-smoothing: antialiased;
 }
+
 a {
-	color: #999;
+  color: #999;
 }
 
 // colors
 $colors: (
-	"primary": #db9e3f,
-	"white": #fff,
-	"light": #f9f9f9,
-	"grey": #999,
-	"dark-1": #343440,
-	"dark": #212222,
-	"black": #000,
+  "primary": #db9e3f,
+  "white": #fff,
+  "light": #f9f9f9,
+  "grey": #999,
+  "grey-1": #666,
+  "dark-1": #343440,
+  "dark": #212222,
+  "black": #000,
 );
 
-@each $colorKey, $color in $colors {
-	// 根据已有的颜色生成文字颜色的工具类
-	.text-#{$colorKey} {
-		color: $color;
-	}
-	// 根据已有的颜色生成背景颜色的工具类
-	.bg-#{$colorKey} {
-		background-color: $color;
-	}
+@each $colorKey,
+$color in $colors {
+
+  // 根据已有的颜色生成文字颜色的工具类
+  .text-#{$colorKey} {
+    color: $color;
+  }
+
+  // 根据已有的颜色生成背景颜色的工具类
+  .bg-#{$colorKey} {
+    background-color: $color;
+  }
 }
 
 // text align
 @each $var in (left, center, right) {
-	.text-#{$var} {
-		text-align: $var;
-	}
+  .text-#{$var} {
+    text-align: $var;
+  }
 }
 
 // font size
 // 整个页面css，只有一个地方定义基本像素(以px为单位)，其它地方都是用相对单位rem定义
 $base-font-size: 1rem;
 $font-sizes: (
-	xs: 0.7692,
-	//10px
-	sm: 0.9231,
-	//12px
-	md: 1,
-	//13px
-	lg: 1.0769,
-	//14px
-	xl: 1.2308,
-	//16px
+  //8px
+  xxs: .6154,
+  //10px
+  xs: 0.7692,
+  //12px
+  sm: 0.9231,
+  //13px
+  md: 1,
+  //14px
+  lg: 1.0769,
+  //16px
+  xl: 1.2308,
 );
-@each $sizeKey, $size in $font-sizes {
-	// 根据已有的字体大小生成字体尺寸的工具类
-	.fs-#{$sizeKey} {
-		font-size: $size * $base-font-size;
-	}
+
+@each $sizeKey,
+$size in $font-sizes {
+
+  // 根据已有的字体大小生成字体尺寸的工具类
+  .fs-#{$sizeKey} {
+    font-size: $size * $base-font-size;
+  }
 }
 
 /**
@@ -73,100 +86,144 @@ $font-sizes: (
  * 垂直方向(flex-direction:column)，$flex-jc表示垂直方向的对齐方式，$flex-ai表示水平方向的对齐方式
 */
 .d-flex {
-	display: flex;
+  display: flex;
 }
+
 .flex-column {
-	flex-direction: column;
+  flex-direction: column;
 }
+
 // 主轴的对齐方式
 $flex-jc: (
-	start: flex-start,
-	end: flex-end,
-	center: center,
-	between: space-between,
-	around: space-around,
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  // 左右都没有间距，两端对齐
+  between: space-between,
+  // 左右都有间距，分散对齐
+  around: space-around,
 );
-@each $key, $value in $flex-jc {
-	.jc-#{$key} {
-		justify-content: $value;
-	}
+
+@each $key,
+$value in $flex-jc {
+  .jc-#{$key} {
+    justify-content: $value;
+  }
 }
+
 // 交叉轴的对齐方式
 $flex-ai: (
-	start: flex-start,
-	end: flex-end,
-	center: center,
-	stretch: stretch,
-	// 当在水平方向有对齐方式，需要在垂直(交叉轴)方向等高，就要用到stretch
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  // 当在水平方向有对齐方式，需要在垂直(交叉轴)方向等高，就要用到stretch
+  stretch: stretch,
 );
-@each $key, $value in $flex-ai {
-	.ai-#{$key} {
-		align-items: $value;
-	}
+
+@each $key,
+$value in $flex-ai {
+  .ai-#{$key} {
+    align-items: $value;
+  }
 }
-// 简写方式：左边固定，右边自动拉伸撑满
+
+// 简写方式：左边和右边固定，占据剩余空间，自动拉伸撑满
 .flex-1 {
-	flex: 1; // 表示shrink和grow都是1
+  flex: 1; // 表示shrink和grow都是1
 }
-// 完整方式：左边固定，右边自动拉伸撑满
+
+// 完整方式：左边和右边固定，占据剩余空间，自动拉伸撑满
 .flex-grow-1 {
-	flex-grow: 1;
+  flex-grow: 1;
 }
 
 // spacing
 $spacing-types: (
-	m: margin,
-	p: padding,
+  m: margin,
+  p: padding,
 );
 $spacing-directions: (
-	t: top,
-	r: right,
-	b: bottom,
-	l: left,
+  t: top,
+  r: right,
+  b: bottom,
+  l: left,
 );
 $spacing-directions: (
-	t: top,
-	r: right,
-	b: bottom,
-	l: left,
+  t: top,
+  r: right,
+  b: bottom,
+  l: left,
 );
 $base-spacing-size: 1rem; // 基础的空间尺寸单位
 // 倍数尺寸参考bootstrap
 $spacing-sizes: (
-	0: 0,
-	1: 0.25,
-	2: 0.5,
-	3: 1,
-	4: 1.5,
-	5: 3,
+  0: 0,
+  1: 0.25,
+  2: 0.5,
+  3: 1,
+  4: 1.5,
+  5: 3,
 );
+
 // 嵌套循环
-@each $typeKey, $type in $spacing-types {
-	// .m-1 {margin: 0.25rem}的形式
-	@each $sizeKey, $size in $spacing-sizes {
-		.#{$typeKey}-#{$sizeKey} {
-			#{$type}: $size * $base-spacing-size;
-		}
-	}
-	// .mx-1和.my-1
-	@each $sizeKey, $size in $spacing-sizes {
-		// .mx-1表示水平方向左右保持一致
-		.#{$typeKey}x-#{$sizeKey} {
-			#{$type}-left: $size * $base-spacing-size;
-			#{$type}-right: $size * $base-spacing-size;
-		}
-		// .my-1表示垂直方向上下保持一致
-		.#{$typeKey}y-#{$sizeKey} {
-			#{$type}-top: $size * $base-spacing-size;
-			#{$type}-bottom: $size * $base-spacing-size;
-		}
-	}
-	// .mt-1 {margin-top: 0.25rem}的形式，三层嵌套循环
-	@each $directionKey, $direction in $spacing-directions {
-		@each $sizeKey, $size in $spacing-sizes {
-			.#{$typeKey}#{$directionKey}-#{$sizeKey} {
-				#{$type}-#{$direction}: $size * $base-spacing-size;
-			}
-		}
-	}
+@each $typeKey,
+$type in $spacing-types {
+
+  // .m-1 {margin: 0.25rem}的形式
+  @each $sizeKey,
+  $size in $spacing-sizes {
+    .#{$typeKey}-#{$sizeKey} {
+      #{$type}: $size * $base-spacing-size;
+    }
+  }
+
+  // .mx-1和.my-1
+  @each $sizeKey,
+  $size in $spacing-sizes {
+
+    // .mx-1表示水平方向左右保持一致
+    .#{$typeKey}x-#{$sizeKey} {
+      #{$type}-left: $size * $base-spacing-size;
+      #{$type}-right: $size * $base-spacing-size;
+    }
+
+    // .my-1表示垂直方向上下保持一致
+    .#{$typeKey}y-#{$sizeKey} {
+      #{$type}-top: $size * $base-spacing-size;
+      #{$type}-bottom: $size * $base-spacing-size;
+    }
+  }
+
+  // .mt-1 {margin-top: 0.25rem}的形式，三层嵌套循环
+  @each $directionKey,
+  $direction in $spacing-directions {
+
+    @each $sizeKey,
+    $size in $spacing-sizes {
+      .#{$typeKey}#{$directionKey}-#{$sizeKey} {
+        #{$type}-#{$direction}: $size * $base-spacing-size;
+      }
+    }
+  }
+}
+
+// button
+.btn {
+  border: none;
+  border-radius: .1538rem;
+  // map-get是上面定义的一个map，变量是$font-sizes，键是sm
+  font-size: map-get($font-sizes, 'sm') * $base-font-size;
+  padding: 0.2rem 0.6rem;
+}
+
+// nav
+.nav {
+  .nav-item {
+    border-bottom: .2308rem solid transparent; // 透明的
+    padding-bottom: 0.2rem;
+
+    &.active {
+      border-bottom: .2308rem solid #fff;
+    }
+  }
 }
