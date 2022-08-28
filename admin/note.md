@@ -21,3 +21,30 @@
 表示使用字体的先后顺序：有Arial用它，没Arial用Helvetica，没Helvetica就用sans-serif
 Arial：几乎所有电脑都有的字体；Helvetica：苹果设备字体；sans-serif：非称线字体(主流设备使用)
 - line-height: 1.2em;表示当前行的字体高度1.2倍
+- scss语法：
+```css
+/* colors */
+$colors: (
+  'primary': #db9e3f,
+  'light':#f9f9f9,
+);
+
+/* text方式一 */
+$text: (left, center, right);
+@each $var in $text {
+  .text-#{$var} {
+    text-align: $var;
+  }
+}
+/* text方式二 */
+@each $var in (left, center, right) {
+  .text-#{$var} {
+    text-align: $var;
+  }
+}
+
+/**
+ * $text: ();和 $colors: ();
+ * 变量对应的括号里面的值可以是数组结构(1, 2, 3)，也可以是map结构(a:1, b:2, c:3)。
+ */
+```
