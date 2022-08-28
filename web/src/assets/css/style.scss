@@ -61,3 +61,48 @@ $font-sizes: (
     font-size: $size * $base-font-size;
   }
 }
+
+/**
+ * 使用助手工具类实现flex布局(主轴$flex-jc和交叉轴$flex-ai的对齐方式)
+ * 默认水平方向(flex-direction:row)，$flex-jc表示水平方向的对齐方式，$flex-ai表示垂直方向的对齐方式
+ * 垂直方向(flex-direction:column)，$flex-jc表示垂直方向的对齐方式，$flex-ai表示水平方向的对齐方式
+*/
+.d-flex {
+  display: flex;
+}
+.flex-column {
+  flex-direction: column;
+}
+// 主轴的对齐方式
+$flex-jc: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+);
+@each $key, $value in $flex-jc {
+  .jc-#{$key} {
+    justify-content: $value;
+  }
+}
+// 交叉轴的对齐方式
+$flex-ai: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  stretch: stretch, // 当在水平方向有对齐方式，需要在垂直(交叉轴)方向等高，就要用到stretch
+);
+@each $key, $value in $flex-ai {
+  .ai-#{$key} {
+    align-items: $value;
+  }
+}
+// 简写方式：左边固定，右边自动拉伸撑满
+.flex-1 {
+  flex: 1; // 表示shrink和grow都是1
+}
+// 完整方式：左边固定，右边自动拉伸撑满
+.flex-grow-1 {
+  flex-grow: 1;
+}
