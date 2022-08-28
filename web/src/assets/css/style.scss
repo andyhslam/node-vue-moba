@@ -1,0 +1,17 @@
+// reset
+*{
+  box-sizing: border-box;
+  outline: none; // 不高亮显示
+}
+html{
+  font-size: 13px; // 定义网站的基本字体尺寸
+}
+body{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.2em;
+  background-color: #f1f1f1;
+}
+a{
+  color: #999;
+}
