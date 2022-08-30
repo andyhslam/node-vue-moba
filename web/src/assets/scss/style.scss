@@ -1,3 +1,5 @@
+@import './variables';
+
 // reset
 * {
   box-sizing: border-box;
@@ -20,18 +22,6 @@ a {
   color: #999;
 }
 
-// colors
-$colors: (
-  "primary": #db9e3f,
-  "white": #fff,
-  "light": #f9f9f9,
-  "grey": #999,
-  "grey-1": #666,
-  "dark-1": #343440,
-  "dark": #212222,
-  "black": #000,
-);
-
 @each $colorKey,
 $color in $colors {
 
@@ -49,27 +39,9 @@ $color in $colors {
 // text align
 @each $var in (left, center, right) {
   .text-#{$var} {
-    text-align: $var;
+    text-align: $var  !important;
   }
 }
-
-// font size
-// 整个页面css，只有一个地方定义基本像素(以px为单位)，其它地方都是用相对单位rem定义
-$base-font-size: 1rem;
-$font-sizes: (
-  //8px
-  xxs: .6154,
-  //10px
-  xs: 0.7692,
-  //12px
-  sm: 0.9231,
-  //13px
-  md: 1,
-  //14px
-  lg: 1.0769,
-  //16px
-  xl: 1.2308,
-);
 
 @each $sizeKey,
 $size in $font-sizes {
@@ -78,6 +50,15 @@ $size in $font-sizes {
   .fs-#{$sizeKey} {
     font-size: $size * $base-font-size;
   }
+}
+
+// width, height
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
 }
 
 /**
@@ -93,32 +74,12 @@ $size in $font-sizes {
   flex-direction: column;
 }
 
-// 主轴的对齐方式
-$flex-jc: (
-  start: flex-start,
-  end: flex-end,
-  center: center,
-  // 左右都没有间距，两端对齐
-  between: space-between,
-  // 左右都有间距，分散对齐
-  around: space-around,
-);
-
 @each $key,
 $value in $flex-jc {
   .jc-#{$key} {
     justify-content: $value;
   }
 }
-
-// 交叉轴的对齐方式
-$flex-ai: (
-  start: flex-start,
-  end: flex-end,
-  center: center,
-  // 当在水平方向有对齐方式，需要在垂直(交叉轴)方向等高，就要用到stretch
-  stretch: stretch,
-);
 
 @each $key,
 $value in $flex-ai {
@@ -136,34 +97,6 @@ $value in $flex-ai {
 .flex-grow-1 {
   flex-grow: 1;
 }
-
-// spacing
-$spacing-types: (
-  m: margin,
-  p: padding,
-);
-$spacing-directions: (
-  t: top,
-  r: right,
-  b: bottom,
-  l: left,
-);
-$spacing-directions: (
-  t: top,
-  r: right,
-  b: bottom,
-  l: left,
-);
-$base-spacing-size: 1rem; // 基础的空间尺寸单位
-// 倍数尺寸参考bootstrap
-$spacing-sizes: (
-  0: 0,
-  1: 0.25,
-  2: 0.5,
-  3: 1,
-  4: 1.5,
-  5: 3,
-);
 
 // 嵌套循环
 @each $typeKey,

@@ -1,0 +1,80 @@
+// scss定义的规范：所有被包含的文件以_下划线开头，其它地方引用该文件时不需要下划线
+
+// colors
+$colors: (
+  "primary": #db9e3f,
+  "info": #4b67af,
+  "white": #fff,
+  "light": #f9f9f9,
+  "grey": #999,
+  "grey-1": #666,
+  "dark-1": #343440,
+  "dark": #212222,
+  "black": #000,
+);
+
+// font size
+// 整个页面css，只有一个地方定义基本像素(以px为单位)，其它地方都是用相对单位rem定义
+$base-font-size: 1rem;
+$font-sizes: (
+  //8px
+  xxs: .6154,
+  //10px
+  xs: 0.7692,
+  //12px
+  sm: 0.9231,
+  //13px
+  md: 1,
+  //14px
+  lg: 1.0769,
+  //16px
+  xl: 1.2308,
+);
+
+// 主轴的对齐方式
+$flex-jc: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  // 左右都没有间距，两端对齐
+  between: space-between,
+  // 左右都有间距，分散对齐
+  around: space-around,
+);
+
+// 交叉轴的对齐方式
+$flex-ai: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  // 当在水平方向有对齐方式，需要在垂直(交叉轴)方向等高，就要用到stretch
+  stretch: stretch,
+);
+
+// spacing
+$spacing-types: (
+  m: margin,
+  p: padding,
+);
+$spacing-directions: (
+  t: top,
+  r: right,
+  b: bottom,
+  l: left,
+);
+$spacing-directions: (
+  t: top,
+  r: right,
+  b: bottom,
+  l: left,
+);
+$base-spacing-size: 1rem; // 基础的空间尺寸单位
+// 倍数尺寸参考bootstrap
+$spacing-sizes: (
+  0: 0,
+  1: 0.25,
+  2: 0.5,
+  3: 1,
+  4: 1.5,
+  5: 3,
+);
