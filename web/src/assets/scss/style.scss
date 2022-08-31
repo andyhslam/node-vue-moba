@@ -74,6 +74,11 @@ $size in $font-sizes {
   flex-direction: column;
 }
 
+// 使用flex布局，里面的所有元素默认都会挤在一行，加上flex-wrap让其换行
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 @each $key,
 $value in $flex-jc {
   .jc-#{$key} {
@@ -158,5 +163,24 @@ $type in $spacing-types {
     &.active {
       border-bottom: .2308rem solid #fff;
     }
+  }
+}
+
+// sprite
+.sprite {
+  background: url(../images/index.png) no-repeat 0 0;
+  background-size: 28.8462rem;
+  display: inline-block;
+
+  &.sprite-news {
+    width: 1.7692rem;
+    height: 1.5385rem;
+    background-position: 63.546% 15.517%;
+  }
+
+  &.sprite-arrow {
+    width: .7692rem;
+    height: .7692rem;
+    background-position: 38.577% 52.076%;
   }
 }

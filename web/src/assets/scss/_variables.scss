@@ -6,12 +6,15 @@ $colors: (
   "info": #4b67af,
   "white": #fff,
   "light": #f9f9f9,
+  "light-1": #d4d9de,
   "grey": #999,
   "grey-1": #666,
   "dark-1": #343440,
   "dark": #212222,
   "black": #000,
 );
+
+$border-color: map-get($map: $colors, $key: 'light-1');
 
 // font size
 // 整个页面css，只有一个地方定义基本像素(以px为单位)，其它地方都是用相对单位rem定义

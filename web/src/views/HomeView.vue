@@ -24,6 +24,19 @@
 				slot="pagination"
 			></div>
 		</swiper>
+		<!-- end of swiper -->
+		<div class="nav-icons bg-white mt-3 text-center pt-3 text-dark-1">
+			<div class="d-flex flex-wrap">
+				<div class="nav-item mb-3" v-for="n in 10" :key="n">
+					<i class="sprite sprite-news"></i>
+					<div class="py-2">爆料站</div>
+				</div>
+			</div>
+			<div class="bg-light py-2 fs-sm d-flex jc-center ai-center">
+				<i class="sprite sprite-arrow mr-1"></i>
+				<span>收起</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -42,7 +55,7 @@ export default {
 	},
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/assets/scss/_variables.scss";
 
 .home-pagination {
@@ -52,6 +65,18 @@ export default {
 		background-color: map-get($colors, "white");
 		&.swiper-pagination-bullet-active {
 			background-color: map-get($colors, "info");
+		}
+	}
+}
+
+.nav-icons {
+	border-top: 1px solid $border-color;
+	border-bottom: 1px solid $border-color;
+	.nav-item {
+		width: 25%;
+		border-right: 1px solid $border-color;
+		&:nth-child(4n) {
+			border-right: none;
 		}
 	}
 }
