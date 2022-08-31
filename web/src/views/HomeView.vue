@@ -37,6 +37,8 @@
 				<span>收起</span>
 			</div>
 		</div>
+		<!-- end of nav icons -->
+		<i class="iconfont icon-cc-menu-circle"></i>
 	</div>
 </template>
 
