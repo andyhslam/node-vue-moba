@@ -10,5 +10,21 @@ const schema = new mongoose.Schema({
 	parent: { type: mongoose.SchemaTypes.ObjectId, ref: "Category" },
 })
 
+// 虚拟模型
+schema.virtual("children", {
+	localField: "_id",
+	foreignField: "parent",
+	justOne: false,
+	ref: "Category",
+})
+
+// 每个分类关联文章
+schema.virtual("newsList", {
+	localField: "_id",
+	foreignField: "categories",
+	justOne: false,
+	ref: "Article",
+})
+
 // 导出model(Mongoose的model相当于MongoDB的集合)；Category表示数据表名称或者集合名称
 module.exports = mongoose.model("Category", schema)

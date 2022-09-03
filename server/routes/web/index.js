@@ -51,6 +51,73 @@ module.exports = (app) => {
 		await Article.insertMany(newsList)
 		res.send(newsList)
 	})
+
+	/**
+	 * 新闻列表接口，用于前端调用
+	 * 以分类为主体，关联新闻，去把新闻调出来
+	 */
+	router.get("/news/list", async (req, res) => {
+		// const parent = await Category.findOne({
+		// 	name: "新闻分类", // 调出顶级分类
+		// })
+		// 	.populate({
+		// 		path: "children", // 调出子分类
+		// 		populate: {
+		// 			path: "newsList", // 每个子分类再去关联新闻
+		// 		},
+		// 	})
+		// 	.lean() // lean()表示带上关联，展示出来
+
+		const parent = await Category.findOne({
+			name: "新闻分类",
+		})
+		/**
+		 * mongodb的聚合查询(aggregate)：可以在一次查询里面，同时执行多次查询，最终得到预期结果
+		 * 通过一条查询语句去关联查出来的数据，比分成多条语句来查询的效率高得多。
+		 * 聚合查询的参数称为聚合管道，在此可以定义多种操作：
+		 * 第一步：通过操作符$match来过滤数据；
+		 * 第二步：关联查询
+		 * 第三步：修改newsList，每个newsList里面，只要5个元素
+		 */
+		const cats = await Category.aggregate([
+			{ $match: { parent: parent._id } },
+			// $lookup类似于关系型数据库里面的join
+			{
+				$lookup: {
+					from: "articles", // 表示关联哪个集合(数据表)
+					localField: "_id",
+					foreignField: "categories",
+					as: "newsList", // 起名
+				},
+			},
+			{
+				$addFields: {
+					newsList: { $slice: ["$newsList", 5] },
+				},
+			},
+		])
+		const subCats = cats.map((v) => v._id)
+		cats.unshift({
+			name: "热门",
+			newsList: await Article.find()
+				.where({
+					categories: { $in: subCats }, // 不限制分类，调取总数居
+				})
+				.populate("categories") // 热门要关联到分类再查出来
+				.limit(5)
+				.lean(),
+		})
+
+		cats.map((cat) => {
+			cat.newsList.map((news) => {
+				news.categoryName =
+					cat.name === "热门" ? news.categories[0].name : cat.name
+				return news
+			})
+			return cat
+		})
+		res.send(cats) // 顶级分类关联children和children里面的newsList
+	})
 	// 每次运行该接口，先清空原有数据，再插入新数据
 	app.use("/web/api", router)
 }
