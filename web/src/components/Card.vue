@@ -13,7 +13,7 @@
 
 <script>
 export default {
-	name: "MCard",
+	name: "MiniatureCard",
 	props: {
 		icon: {
 			type: String,

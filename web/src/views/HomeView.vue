@@ -38,37 +38,25 @@
 			</div>
 		</div>
 		<!-- end of nav icons -->
-		<m-card icon="cc-menu-circle" title="新闻资讯">
-			<div class="nav jc-between">
-				<div class="nav-item active">
-					<div class="nav-link">热门</div>
+		<m-list-card
+			icon="cc-menu-circle"
+			title="新闻资讯"
+			:categories="newsCategory"
+		>
+			<!-- 通过作用域插槽，父组件不必循环，也能取到子组件里面循环体的某个变量 -->
+			<template #items="{ category }">
+				<div
+					class="py-2"
+					v-for="(news, index) in category.newsList"
+					:key="index"
+				>
+					<span>【{{ news.categoryName }}】</span>
+					<span>|</span>
+					<span>{{ news.title }}</span>
+					<span>{{ news.date }}</span>
 				</div>
-				<div class="nav-item">
-					<div class="nav-link">新闻</div>
-				</div>
-				<div class="nav-item">
-					<div class="nav-link">热门</div>
-				</div>
-				<div class="nav-item">
-					<div class="nav-link">新闻</div>
-				</div>
-				<div class="nav-item">
-					<div class="nav-link">热门</div>
-				</div>
-			</div>
-			<div class="pt-3">
-				<swiper>
-					<swiper-slide v-for="m in 5" :key="m">
-						<div class="py-2" v-for="n in 5" :key="n">
-							<span>[新闻]</span>
-							<span>|</span>
-							<span>姜子牙英雄品质升级共创-台词票选活动开启</span>
-							<span>06/02</span>
-						</div>
-					</swiper-slide>
-				</swiper>
-			</div>
-		</m-card>
+			</template>
+		</m-list-card>
 		<m-card icon="cc-menu-circle" title="英雄列表"></m-card>
 		<m-card icon="cc-menu-circle" title="精彩视频"></m-card>
 		<m-card icon="cc-menu-circle" title="图文攻略"></m-card>
@@ -86,6 +74,48 @@ export default {
 					el: ".home-pagination",
 				},
 			},
+			newsCategory: [
+				{
+					name: "热门",
+					newsList: new Array(5).fill({}).map(() => ({
+						categoryName: "公告",
+						title: "姜子牙英雄品质升级共创-台词票选活动开启",
+						date: "06/01",
+					})),
+				},
+				{
+					name: "新闻",
+					newsList: new Array(5).fill({}).map(() => ({
+						categoryName: "新闻",
+						title: "姜子牙英雄品质升级共创-台词票选活动开启",
+						date: "06/01",
+					})),
+				},
+				{
+					name: "新闻",
+					newsList: new Array(5).fill({}).map(() => ({
+						categoryName: "新闻",
+						title: "姜子牙英雄品质升级共创-台词票选活动开启",
+						date: "06/01",
+					})),
+				},
+				{
+					name: "新闻",
+					newsList: new Array(5).fill({}).map(() => ({
+						categoryName: "新闻",
+						title: "姜子牙英雄品质升级共创-台词票选活动开启",
+						date: "06/01",
+					})),
+				},
+				{
+					name: "新闻",
+					newsList: new Array(5).fill({}).map(() => ({
+						categoryName: "新闻",
+						title: "姜子牙英雄品质升级共创-台词票选活动开启",
+						date: "06/01",
+					})),
+				},
+			],
 		}
 	},
 }
