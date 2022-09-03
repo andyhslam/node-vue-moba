@@ -38,7 +38,40 @@
 			</div>
 		</div>
 		<!-- end of nav icons -->
-		<i class="iconfont icon-cc-menu-circle"></i>
+		<m-card icon="cc-menu-circle" title="新闻资讯">
+			<div class="nav jc-between">
+				<div class="nav-item active">
+					<div class="nav-link">热门</div>
+				</div>
+				<div class="nav-item">
+					<div class="nav-link">新闻</div>
+				</div>
+				<div class="nav-item">
+					<div class="nav-link">热门</div>
+				</div>
+				<div class="nav-item">
+					<div class="nav-link">新闻</div>
+				</div>
+				<div class="nav-item">
+					<div class="nav-link">热门</div>
+				</div>
+			</div>
+			<div class="pt-3">
+				<swiper>
+					<swiper-slide v-for="m in 5" :key="m">
+						<div class="py-2" v-for="n in 5" :key="n">
+							<span>[新闻]</span>
+							<span>|</span>
+							<span>姜子牙英雄品质升级共创-台词票选活动开启</span>
+							<span>06/02</span>
+						</div>
+					</swiper-slide>
+				</swiper>
+			</div>
+		</m-card>
+		<m-card icon="cc-menu-circle" title="英雄列表"></m-card>
+		<m-card icon="cc-menu-circle" title="精彩视频"></m-card>
+		<m-card icon="cc-menu-circle" title="图文攻略"></m-card>
 	</div>
 </template>
 

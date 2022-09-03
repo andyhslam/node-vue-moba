@@ -156,12 +156,25 @@ $type in $spacing-types {
 
 // nav
 .nav {
+  display: flex;
+
   .nav-item {
     border-bottom: .2308rem solid transparent; // 透明的
     padding-bottom: 0.2rem;
 
     &.active {
-      border-bottom: .2308rem solid #fff;
+      color: map-get($colors, 'primary');
+      border-bottom-color: map-get($colors, 'primary');
+    }
+  }
+
+  &.nav-inverse {
+    .nav-item {
+      color: map-get($colors, 'white');
+
+      &.active {
+        border-bottom-color: map-get($colors, 'white');
+      }
     }
   }
 }
