@@ -46,14 +46,18 @@
 			<!-- 通过作用域插槽，父组件不必循环，也能取到子组件里面循环体的某个变量 -->
 			<template #items="{ category }">
 				<div
-					class="py-2"
+					class="py-2 fs-lg d-flex"
 					v-for="(news, index) in category.newsList"
 					:key="index"
 				>
-					<span>【{{ news.categoryName }}】</span>
-					<span>|</span>
-					<span>{{ news.title }}</span>
-					<span>{{ news.date }}</span>
+					<span class="text-info">[{{ news.categoryName }}]</span>
+					<span class="px-2">|</span>
+					<span class="flex-1 text-dark-1 text-ellipsis pr-2">{{
+						news.title
+					}}</span>
+					<span class="text-grey-1 fs-sm">{{
+						news.createdAt | newsDate
+					}}</span>
 				</div>
 			</template>
 		</m-list-card>
@@ -64,9 +68,16 @@
 </template>
 
 <script>
+import dayjs from "dayjs"
+
 export default {
 	name: "HomeView",
 	components: {},
+	filters: {
+		newsDate(val) {
+			return dayjs(val).format("MM/DD")
+		},
+	},
 	data() {
 		return {
 			swiperOption: {
@@ -74,49 +85,17 @@ export default {
 					el: ".home-pagination",
 				},
 			},
-			newsCategory: [
-				{
-					name: "热门",
-					newsList: new Array(5).fill({}).map(() => ({
-						categoryName: "公告",
-						title: "姜子牙英雄品质升级共创-台词票选活动开启",
-						date: "06/01",
-					})),
-				},
-				{
-					name: "新闻",
-					newsList: new Array(5).fill({}).map(() => ({
-						categoryName: "新闻",
-						title: "姜子牙英雄品质升级共创-台词票选活动开启",
-						date: "06/01",
-					})),
-				},
-				{
-					name: "新闻",
-					newsList: new Array(5).fill({}).map(() => ({
-						categoryName: "新闻",
-						title: "姜子牙英雄品质升级共创-台词票选活动开启",
-						date: "06/01",
-					})),
-				},
-				{
-					name: "新闻",
-					newsList: new Array(5).fill({}).map(() => ({
-						categoryName: "新闻",
-						title: "姜子牙英雄品质升级共创-台词票选活动开启",
-						date: "06/01",
-					})),
-				},
-				{
-					name: "新闻",
-					newsList: new Array(5).fill({}).map(() => ({
-						categoryName: "新闻",
-						title: "姜子牙英雄品质升级共创-台词票选活动开启",
-						date: "06/01",
-					})),
-				},
-			],
+			newsCategory: [],
 		}
+	},
+	created() {
+		this.fetchNewsCategory()
+	},
+	methods: {
+		async fetchNewsCategory() {
+			const res = await this.$http.get("news/list")
+			this.newsCategory = res.data
+		},
 	},
 }
 </script>
