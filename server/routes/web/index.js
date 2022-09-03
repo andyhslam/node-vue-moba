@@ -8,7 +8,7 @@ module.exports = (app) => {
 	/**
 	 * 通过访问某个页面，录入某些数据，方便我们重复录入。
 	 * /news/init：非正式使用，测试用；通过js的方式录入数据，而不是在后台一个个添加。
-	 * /news/init：初始化新闻的路由，录入新闻
+	 * /news/init：导入新闻数据的路由；初始化新闻的路由，录入新闻
 	 */
 	router.get("/news/init", async (req, res) => {
 		// 只找新闻分类下面的子分类
@@ -118,6 +118,9 @@ module.exports = (app) => {
 		})
 		res.send(cats) // 顶级分类关联children和children里面的newsList
 	})
+
+	// 导入英雄数据的路由
+
 	// 每次运行该接口，先清空原有数据，再插入新数据
 	app.use("/web/api", router)
 }

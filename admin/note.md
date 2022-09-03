@@ -52,3 +52,18 @@ $text: (left, center, right);
 2. 字体图标的原理
 - 把每个图标都当成一个字符，最终打包到字体文件里面；其实就是一个个文字，只不过文字长得像字体图标。
  它也是个字体，只不过这个字体是画出来的图标。
+
+3. 首页英雄列表-提取官网数据
+```js
+$$(".hero-nav li").map((el, i) => {
+  return {
+    name: el.innerText,
+    heroes: $$("li", $$(".hero-list")[i]).map((hero) => {
+      return {
+        name: $$("h3", hero)[0].innerHTML,
+        avatar: $$("img", hero)[0].src,
+      }
+    }),
+  }
+})
+```
