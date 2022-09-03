@@ -54,13 +54,16 @@ export default {
 			categories: [],
 		}
 	},
-	beforeRouteEnter: (to, from, next) => {
-		next((vm) => {
-			if (!from.props) {
-				vm.articleModel = {}
-			}
-		})
-	},
+	/**
+	 * 已在Main.vue组件内用<router-view :key="$route.path"></router-view>来解决
+	 */
+	// beforeRouteEnter: (to, from, next) => {
+	// 	next((vm) => {
+	// 		if (!from.props) {
+	// 			vm.articleModel = {}
+	// 		}
+	// 	})
+	// },
 	created() {
 		this.fetchCategories()
 		this.editId && this.fetch()

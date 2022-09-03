@@ -42,13 +42,16 @@ export default {
 			parents: [],
 		}
 	},
-	beforeRouteEnter: (to, from, next) => {
-		next((vm) => {
-			if (!from.props) {
-				vm.categoryModel = {}
-			}
-		})
-	},
+	/**
+	 * 已在Main.vue组件内用<router-view :key="$route.path"></router-view>来解决
+	 */
+	// beforeRouteEnter: (to, from, next) => {
+	// 	next((vm) => {
+	// 		if (!from.props) {
+	// 			vm.categoryModel = {}
+	// 		}
+	// 	})
+	// },
 	created() {
 		this.fetchParents()
 		this.editId && this.fetch()

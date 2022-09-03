@@ -93,8 +93,9 @@
 			</el-header>
 
 			<el-main>
-				<!-- 路由容器 -->
-				<router-view></router-view>
+				<!-- 路由容器(显示子路由的地方)，默认以组件来区分，但是现在两个(新建和编辑)页面共用一个组件，所以区分不开； -->
+				<!-- :key="$route.path"表示以路由的路径来区分，因此跳转路由时，数据会重载。 -->
+				<router-view :key="$route.path"></router-view>
 			</el-main>
 		</el-container>
 	</el-container>

@@ -49,7 +49,7 @@ module.exports = (app) => {
 			// 满足通用性和扩展性
 			queryOptions.populate = "parent"
 		}
-		const items = await req.Model.find().setOptions(queryOptions).limit(10)
+		const items = await req.Model.find().setOptions(queryOptions).limit(100)
 		res.send(items) // 返回给客户端
 	})
 	// 资源详情的接口

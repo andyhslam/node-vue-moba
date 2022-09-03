@@ -46,13 +46,16 @@ export default {
 			itemModel: {},
 		}
 	},
-	beforeRouteEnter: (to, from, next) => {
-		next((vm) => {
-			if (!from.props) {
-				vm.itemModel = {}
-			}
-		})
-	},
+	/**
+	 * 已在Main.vue组件内用<router-view :key="$route.path"></router-view>来解决
+	 */
+	// beforeRouteEnter: (to, from, next) => {
+	// 	next((vm) => {
+	// 		if (!from.props) {
+	// 			vm.itemModel = {}
+	// 		}
+	// 	})
+	// },
 	created() {
 		this.editId && this.fetch()
 	},
