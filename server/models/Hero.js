@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
 	 * 后期只要显示图片地址，因为前端html展示只需要图片地址。
 	 */
 	avatar: { type: String },
+	banner: { type: String },
 	title: { type: String },
 	/**
 	 * 关联的模型是Category，只要关联的都是用ObjectId
@@ -28,6 +29,8 @@ const schema = new mongoose.Schema({
 		{
 			icon: { type: String },
 			name: { type: String },
+			delay: { type: String },
+			cost: { type: String },
 			description: { type: String },
 			tips: { type: String },
 		},

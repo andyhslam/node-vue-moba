@@ -16,11 +16,32 @@
 							:headers="getAuthHeaders()"
 							:action="uploadUrl"
 							:show-file-list="false"
-							:on-success="afterUpload"
+							:on-success="(res) => (heroModel.avatar = res.url)"
 						>
 							<img
 								v-if="heroModel.avatar"
 								:src="heroModel.avatar"
+								class="avatar"
+							/>
+							<i
+								v-else
+								class="el-icon-plus avatar-uploader-icon"
+							></i>
+						</el-upload>
+					</el-form-item>
+					<el-form-item label="背景图">
+						<el-upload
+							class="avatar-uploader"
+							:headers="getAuthHeaders()"
+							:action="uploadUrl"
+							:show-file-list="false"
+							:on-success="
+								(res) => $set(heroModel, 'banner', res.url)
+							"
+						>
+							<img
+								v-if="heroModel.banner"
+								:src="heroModel.banner"
 								class="avatar"
 							/>
 							<i
@@ -146,6 +167,12 @@
 									></i>
 								</el-upload>
 							</el-form-item>
+							<el-form-item label="冷却值">
+								<el-input v-model="item.delay"></el-input>
+							</el-form-item>
+							<el-form-item label="消耗">
+								<el-input v-model="item.cost"></el-input>
+							</el-form-item>
 							<el-form-item label="描述">
 								<el-input
 									type="textarea"
@@ -163,6 +190,51 @@
 									size="small"
 									type="danger"
 									@click="heroModel.skills.splice(index, 1)"
+									>删除</el-button
+								>
+							</el-form-item>
+						</el-col>
+					</el-row>
+				</el-tab-pane>
+				<el-tab-pane label="最佳搭档" name="partners">
+					<el-button
+						size="small"
+						@click="heroModel.partners.push({})"
+					>
+						<i class="el-icon-plus"></i> 添加英雄
+					</el-button>
+					<el-row type="flex" style="flex-wrap: wrap">
+						<!-- 在中等屏幕md，宽度设置为12，即一行展示两个框 -->
+						<el-col
+							:md="12"
+							v-for="(item, index) in heroModel.partners"
+							:key="index"
+						>
+							<el-form-item label="英雄">
+								<el-select
+									filterable
+									clearable
+									v-model="item.hero"
+								>
+									<el-option
+										v-for="hero in heroes"
+										:key="hero._id"
+										:value="hero._id"
+										:label="hero.name"
+									></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="描述">
+								<el-input
+									type="textarea"
+									v-model="item.description"
+								></el-input>
+							</el-form-item>
+							<el-form-item>
+								<el-button
+									size="small"
+									type="danger"
+									@click="heroModel.partners.splice(index, 1)"
 									>删除</el-button
 								>
 							</el-form-item>
@@ -195,11 +267,14 @@ export default {
 			heroModel: {
 				name: "",
 				avatar: "",
+				banner: "",
 				scores: {},
 				skills: [],
+				partners: [],
 			},
 			categories: [],
 			items: [],
+			heroes: [],
 		}
 	},
 	/**
@@ -211,8 +286,10 @@ export default {
 	// 			vm.heroModel = {
 	// 				name: "",
 	// 				avatar: "",
+	//        banner: "",
 	// 				scores: {},
 	// 				skills: [],
+	// 				partners: [],
 	// 			}
 	// 		}
 	// 	})
@@ -220,12 +297,10 @@ export default {
 	created() {
 		this.fetchCategories()
 		this.fetchItems()
+		this.fetchHeroes()
 		this.editId && this.fetch()
 	},
 	methods: {
-		afterUpload(res) {
-			this.heroModel.avatar = res.url
-		},
 		async fetch() {
 			const res = await this.$http.get(`rest/heroes/${this.editId}`)
 			this.heroModel = Object.assign({}, this.heroModel, res.data)
@@ -235,8 +310,12 @@ export default {
 			this.categories = res.data
 		},
 		async fetchItems() {
-			const res = await this.$http.get(`rest/items`)
+			const res = await this.$http.get("/rest/items")
 			this.items = res.data
+		},
+		async fetchHeroes() {
+			const res = await this.$http.get(`/rest/heroes`)
+			this.heroes = res.data
 		},
 		async save() {
 			if (this.editId) {

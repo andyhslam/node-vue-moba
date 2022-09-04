@@ -8,7 +8,7 @@
 			</div>
 			<router-link to="/" tag="div">更多英雄 &gt;</router-link>
 		</div>
-		<h1>{{ model.name }}</h1>
+		<div></div>
 	</div>
 </template>
 
