@@ -166,6 +166,12 @@ module.exports = (app) => {
 		res.send(data)
 	})
 
+	// 英雄详情
+	router.get("/heroes/:id", async (req, res) => {
+		const data = await Hero.findById(req.params.id).lean()
+		res.send(data)
+	})
+
 	// 每次运行该接口，先清空原有数据，再插入新数据
 	app.use("/web/api", router)
 }

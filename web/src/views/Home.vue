@@ -71,15 +71,17 @@
 			<!-- 通过作用域插槽，父组件不必循环，也能取到子组件里面循环体的某个变量 -->
 			<template #items="{ category }">
 				<div class="d-flex flex-wrap" style="margin: 0 -0.5rem">
-					<div
+					<router-link
+						tag="div"
+						:to="`/heroes/${hero._id}`"
 						class="p-2 text-center"
-						style="width: 10%"
+						style="width: 20%"
 						v-for="(hero, index) in category.heroList"
 						:key="index"
 					>
 						<img :src="hero.avatar" class="w-100" />
 						<div>{{ hero.name }}</div>
-					</div>
+					</router-link>
 				</div>
 			</template>
 		</m-list-card>
