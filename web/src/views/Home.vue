@@ -45,7 +45,9 @@
 		>
 			<!-- 通过作用域插槽，父组件不必循环，也能取到子组件里面循环体的某个变量 -->
 			<template #items="{ category }">
-				<div
+				<router-link
+					tag="div"
+					:to="`/articles/${news._id}`"
 					class="py-2 fs-lg d-flex"
 					v-for="(news, index) in category.newsList"
 					:key="index"
@@ -58,7 +60,7 @@
 					<span class="text-grey-1 fs-sm">{{
 						news.createdAt | newsDate
 					}}</span>
-				</div>
+				</router-link>
 			</template>
 		</m-list-card>
 		<m-list-card
@@ -114,11 +116,11 @@ export default {
 	},
 	methods: {
 		async fetchNewsCategory() {
-			const res = await this.$http.get("news/list")
+			const res = await this.$http.get("/news/list")
 			this.newsCategory = res.data
 		},
 		async fetchHeroCategory() {
-			const res = await this.$http.get("heroes/list")
+			const res = await this.$http.get("/heroes/list")
 			this.heroCategory = res.data
 		},
 	},

@@ -154,6 +154,18 @@ module.exports = (app) => {
 		res.send(cats) // 顶级分类关联children和children里面的heroList
 	})
 
+	// 文章详情
+	router.get("/articles/:id", async (req, res) => {
+		const data = await Article.findById(req.params.id).lean()
+		// 找出相关分类
+		data.related = await Article.find()
+			.where({
+				categories: { $in: data.categories },
+			})
+			.limit(2)
+		res.send(data)
+	})
+
 	// 每次运行该接口，先清空原有数据，再插入新数据
 	app.use("/web/api", router)
 }
