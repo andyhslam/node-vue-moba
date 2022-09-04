@@ -16,7 +16,9 @@
 							:headers="getAuthHeaders()"
 							:action="uploadUrl"
 							:show-file-list="false"
-							:on-success="(res) => (heroModel.avatar = res.url)"
+							:on-success="
+								(res) => $set(heroModel, 'avatar', res.url)
+							"
 						>
 							<img
 								v-if="heroModel.avatar"
@@ -266,8 +268,9 @@ export default {
 		return {
 			heroModel: {
 				name: "",
-				avatar: "",
-				banner: "",
+				// 使用$set显式赋值，此处就不用再初始化avatar和banner
+				// avatar: "",
+				// banner: "",
 				scores: {},
 				skills: [],
 				partners: [],
@@ -285,8 +288,6 @@ export default {
 	// 		if (!from.props) {
 	// 			vm.heroModel = {
 	// 				name: "",
-	// 				avatar: "",
-	//        banner: "",
 	// 				scores: {},
 	// 				skills: [],
 	// 				partners: [],
