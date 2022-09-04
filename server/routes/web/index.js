@@ -54,6 +54,7 @@ module.exports = (app) => {
 		/**
 		 * mongodb的聚合查询(aggregate)：可以在一次查询里面，同时执行多次查询，最终得到预期结果
 		 * 通过一条查询语句去关联查出来的数据，比分成多条语句来查询的效率高得多。
+		 * 把多个查询合并到一次查询，速度快，效率高。
 		 * 聚合查询的参数称为聚合管道，在此可以定义多种操作：
 		 * 第一步：通过操作符$match来过滤数据；
 		 * 第二步：关联查询
@@ -120,6 +121,37 @@ module.exports = (app) => {
 			await Hero.insertMany(cat.heroes)
 		}
 		res.send(await Hero.find())
+	})
+
+	// 英雄列表接口
+	router.get("/heroes/list", async (req, res) => {
+		const parent = await Category.findOne({
+			name: "英雄分类",
+		})
+		const cats = await Category.aggregate([
+			{ $match: { parent: parent._id } },
+			// $lookup类似于关系型数据库里面的join
+			{
+				$lookup: {
+					from: "heroes", // 表示关联哪个集合(数据表)
+					localField: "_id", // 本地字段
+					foreignField: "categories", // 外键字段
+					as: "heroList", // 起名
+				},
+			},
+		])
+		const subCats = cats.map((v) => v._id)
+		// 热门分类需要手动去查询
+		cats.unshift({
+			name: "热门",
+			heroList: await Hero.find()
+				.where({
+					categories: { $in: subCats }, // 不限制分类，调取总数居
+				})
+				.limit(10)
+				.lean(),
+		})
+		res.send(cats) // 顶级分类关联children和children里面的heroList
 	})
 
 	// 每次运行该接口，先清空原有数据，再插入新数据

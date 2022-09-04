@@ -61,7 +61,26 @@
 				</div>
 			</template>
 		</m-list-card>
-		<m-card icon="cc-menu-circle" title="英雄列表"></m-card>
+		<m-list-card
+			icon="superhero"
+			title="英雄列表"
+			:categories="heroCategory"
+		>
+			<!-- 通过作用域插槽，父组件不必循环，也能取到子组件里面循环体的某个变量 -->
+			<template #items="{ category }">
+				<div class="d-flex flex-wrap" style="margin: 0 -0.5rem">
+					<div
+						class="p-2 text-center"
+						style="width: 10%"
+						v-for="(hero, index) in category.heroList"
+						:key="index"
+					>
+						<img :src="hero.avatar" class="w-100" />
+						<div>{{ hero.name }}</div>
+					</div>
+				</div>
+			</template>
+		</m-list-card>
 		<m-card icon="cc-menu-circle" title="精彩视频"></m-card>
 		<m-card icon="cc-menu-circle" title="图文攻略"></m-card>
 	</div>
@@ -86,15 +105,21 @@ export default {
 				},
 			},
 			newsCategory: [],
+			heroCategory: [],
 		}
 	},
 	created() {
 		this.fetchNewsCategory()
+		this.fetchHeroCategory()
 	},
 	methods: {
 		async fetchNewsCategory() {
 			const res = await this.$http.get("news/list")
 			this.newsCategory = res.data
+		},
+		async fetchHeroCategory() {
+			const res = await this.$http.get("heroes/list")
+			this.heroCategory = res.data
 		},
 	},
 }
