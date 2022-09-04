@@ -11,7 +11,7 @@ const schema = new mongoose.Schema(
 )
 
 /**
- * 导出model(Mongoose的model相当于MongoDB的集合)；
- * Article表示模型名称；articles表示集合名称或者数据表名称。
+ * 导出model(Mongoose的模型相当于MongoDB的集合)；
+ * Article表示模型名称；schema表示表结构；articles表示集合名称或者数据表名称。
  */
 module.exports = mongoose.model("Article", schema, "articles")

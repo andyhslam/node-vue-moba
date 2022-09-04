@@ -5,6 +5,8 @@ module.exports = (app) => {
 	const mongoose = require("mongoose")
 	const Category = mongoose.model("Category")
 	const Article = mongoose.model("Article")
+	const Hero = mongoose.model("Hero")
+	const { newsRawData: newsTitles, heroRawData } = require("./data.js")
 	/**
 	 * 通过访问某个页面，录入某些数据，方便我们重复录入。
 	 * /news/init：非正式使用，测试用；通过js的方式录入数据，而不是在后台一个个添加。
@@ -15,28 +17,6 @@ module.exports = (app) => {
 		const parent = await Category.findOne({ name: "新闻分类" })
 		// lean()方法表示取出纯粹的js对象或者数组，不带任何mongoose里面的模型对象，比较干净的数据对象。
 		const cats = await Category.find().where({ parent }).lean()
-		const newsTitles = [
-			"姜子牙英雄品质升级共创-台词票选活动开启",
-			"峡谷夏日特别行动之狄某有话说| 8月峡谷数据总结来了~",
-			"蔡小姬探班手记|橘右京·枫霜尽皮肤海报设计故事",
-			"周年回城创意分享，一起来看看设计师们的奇思妙想吧！",
-			"2022周年庆回城新鲜出炉，速来围观！",
-			"9月2日体验服停机更新公告",
-			"9月1日体验服停机更新公告",
-			"9月1日全服不停机更新公告",
-			"9月1日英雄平衡性调整丨赵云、扁鹊、刘邦增强",
-			"8月31日挂车行为专项违规处罚公告",
-			"【秋月挑战】活动开启公告及FAQ",
-			"鸿运抽奖，抽六次送一次活动开启公告",
-			"收集枫叶送全新荣耀播报！裴擒虎-天狼狩猎者返场！",
-			'【微信用户专属】微信小程序"游戏礼品站"购买橘右京新皮肤抽奖活动',
-			"《行剑 枫霜尽》活动开启公告",
-			"上最右为KPL战队助威",
-			"K甲总决赛回顾：EMC让三追四夺冠，子衿荣膺总决赛MVP",
-			"重庆狼队.小胖宫本武藏三连决胜再获周最佳，夏季常规赛完美收官",
-			"风物长宜放眼量，夏季赛常规赛收官周决战紫禁之巅",
-			"K甲第九周回顾：MTG零封收官，常规赛落下帷幕",
-		]
 		const newsList = newsTitles.map((title) => {
 			// 数组里面随机取一个元素
 			const randomCats = cats.slice().sort((a, b) => Math.random() - 0.5)
@@ -119,7 +99,28 @@ module.exports = (app) => {
 		res.send(cats) // 顶级分类关联children和children里面的newsList
 	})
 
-	// 导入英雄数据的路由
+	// 导入英雄数据的路由，测试接口
+	router.get("/heroes/init", async (req, res) => {
+		await Hero.deleteMany({})
+		for (let cat of heroRawData) {
+			if (cat.name === "热门") {
+				// 如果是热门分类，就直接跳过本次循环，进入下一轮循环，不要录入英雄
+				// continue表示直接进入下一轮循环，不要执行后续代码
+				// 没有continue的话，就表示继续执行本次循环以及后续代码
+				continue
+			}
+			// 通过名称找到当前分类在数据库中对应的数据
+			const category = await Category.findOne({
+				name: cat.name,
+			})
+			cat.heroes.forEach((hero) => {
+				hero.categories = [category]
+			})
+			// 录入英雄
+			await Hero.insertMany(cat.heroes)
+		}
+		res.send(await Hero.find())
+	})
 
 	// 每次运行该接口，先清空原有数据，再插入新数据
 	app.use("/web/api", router)

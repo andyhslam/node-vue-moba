@@ -9,5 +9,8 @@ const schema = new mongoose.Schema({
 	icon: { type: String },
 })
 
-// 导出model(Mongoose的model相当于MongoDB的集合)；Item表示数据表名称或者集合名称
-module.exports = mongoose.model("Item", schema)
+/**
+ * 导出model(Mongoose的模型相当于MongoDB的集合)；
+ * Item表示模型名称；schema表示表结构；items表示集合名称或者数据表名称。
+ */
+module.exports = mongoose.model("Item", schema, "items")
