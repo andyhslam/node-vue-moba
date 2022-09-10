@@ -165,6 +165,23 @@ $type in $spacing-types {
   // map-get是上面定义的一个map，变量是$font-sizes，键是sm
   font-size: map-get($font-sizes, 'sm') * $base-font-size;
   padding: 0.2rem 0.6rem;
+
+  &.btn-lg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+    background-color: map-get($colors, 'white-1');
+    border: .0769rem solid map-get($colors, 'white-2');
+
+    i {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      color: map-get($colors, 'primary')
+    }
+  }
 }
 
 // nav
@@ -172,8 +189,9 @@ $type in $spacing-types {
   display: flex;
 
   .nav-item {
-    border-bottom: .2308rem solid transparent; // 透明的
+    cursor: pointer;
     padding-bottom: 0.2rem;
+    border-bottom: .2308rem solid transparent; // 透明的
 
     &.active {
       color: map-get($colors, 'primary');
@@ -183,6 +201,7 @@ $type in $spacing-types {
 
   &.nav-inverse {
     .nav-item {
+      cursor: pointer;
       color: map-get($colors, 'white');
 
       &.active {
@@ -216,4 +235,9 @@ $type in $spacing-types {
   .border-#{$dir} {
     border-#{$dir}: .0769rem solid $border-color;
   }
+}
+
+// 手势
+.cur-hand {
+  cursor: pointer;
 }

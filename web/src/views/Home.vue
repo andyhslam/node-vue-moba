@@ -64,7 +64,7 @@
 			</template>
 		</m-list-card>
 		<m-list-card
-			icon="superhero"
+			icon="wangzhejingjileitai"
 			title="英雄列表"
 			:categories="heroCategory"
 		>
@@ -85,8 +85,8 @@
 				</div>
 			</template>
 		</m-list-card>
-		<m-card icon="cc-menu-circle" title="精彩视频"></m-card>
-		<m-card icon="cc-menu-circle" title="图文攻略"></m-card>
+		<m-card icon="shipinbofang" title="精彩视频"></m-card>
+		<m-card icon="tupian" title="图文攻略"></m-card>
 	</div>
 </template>
 

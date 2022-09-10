@@ -1,14 +1,14 @@
 <template>
 	<div class="page-article" v-if="model">
 		<div class="d-flex py-3 px-2 border-bottom">
-			<i class="iconfont icon-fenxiang text-blue"></i>
+			<i class="iconfont icon-back text-blue"></i>
 			<strong class="flex-1 text-blue pl-2">{{ model.title }}</strong>
 			<div class="text-grey fs-xs">2019</div>
 		</div>
 		<div v-html="model.body" class="body px-3 fs-lg"></div>
 		<div class="p-3 border-top">
 			<div class="d-flex ai-center">
-				<i class="iconfont icon-danju-tianchong"></i>
+				<i class="iconfont icon-xiangguanwenzhang"></i>
 				<strong class="text-blue fs-lg ml-1">相关资讯</strong>
 			</div>
 			<div class="pt-2">
