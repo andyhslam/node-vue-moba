@@ -67,3 +67,20 @@ $$(".hero-nav li").map((el, i) => {
   }
 })
 ```
+
+# Ubuntu操作系统的命令
+- apt update
+- apt list --upgradable
+- apt show nginx
+- apt install nginx -y
+- firewall-cmd --zone=public --add-port=80/tcp --permanent
+- systemctl restart firewalld
+
+1. Ubuntu 22.04 安装Mongodb
+https://blog.csdn.net/majiayu000/article/details/126491116
+2. Ubuntu20.04 安装MongoDB及其基本使用
+https://blog.csdn.net/yutu75/article/details/110941936
+3. Ubuntu下MongoDB安装与使用教程
+http://dblab.xmu.edu.cn/blog/mongodb/
+4. 在 Ubuntu 22.04上安装 MongoDB
+https://www.xtuos.com/5757.html
