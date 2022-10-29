@@ -33,6 +33,7 @@ export default {
 		async login() {
 			const res = await this.$http.post("login", this.loginModel)
 			localStorage.token = res.data.token
+			localStorage.username = JSON.parse(res.config.data).username
 			// localStorage.clear() 清空所有storage，包括token
 			this.$router.push("/")
 			this.$message.success("登录成功")

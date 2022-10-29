@@ -80,16 +80,14 @@
 		</el-aside>
 
 		<el-container>
-			<el-header style="text-align: right; font-size: 12px">
-				<el-dropdown>
-					<i class="el-icon-setting" style="margin-right: 15px"></i>
-					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item>查看</el-dropdown-item>
-						<el-dropdown-item>新增</el-dropdown-item>
-						<el-dropdown-item>删除</el-dropdown-item>
-					</el-dropdown-menu>
-				</el-dropdown>
-				<span>王小虎</span>
+			<el-header style="text-align: right">
+				<span style="margin-right: 15px">{{ username }}</span>
+				<el-button
+					type="text"
+					icon="el-icon-switch-button"
+					@click="logout"
+					>退出</el-button
+				>
 			</el-header>
 
 			<el-main>
@@ -105,7 +103,29 @@
 export default {
 	name: "MainView",
 	data() {
-		return {}
+		return {
+			username: localStorage.username,
+		}
+	},
+	methods: {
+		logout() {
+			this.$confirm("是否确定退出", "提示", {
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type: "warning",
+			})
+				.then(() => {
+					// 清空所有storage，包括token
+					localStorage.clear()
+					this.$router.push("/login")
+				})
+				.catch(() => {
+					this.$message({
+						type: "info",
+						message: "已取消退出",
+					})
+				})
+		},
 	},
 }
 </script>
